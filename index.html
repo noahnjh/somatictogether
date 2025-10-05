@@ -70,7 +70,7 @@
                             <span v-for="valueInfo in facetInfo.values" :key="valueInfo.value"
                                 :class="{'bg-blue-500 text-white': activeFacets[facetInfo.facet] && activeFacets[facetInfo.facet][valueInfo.value], 'bg-gray-200 text-gray-700': !(activeFacets[facetInfo.facet] && activeFacets[facetInfo.facet][valueInfo.value])}"
                                 class="inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2 cursor-pointer"
-                                @click="toggleFacet(facetInfo.facet.toLowerCase(), valueInfo.value.toLowerCase())">
+                                @click="toggleFacet(facetInfo.facet.toupperCase(), valueInfo.value.toupperCase())">
                                 {{ valueInfo.value }} ({{ valueInfo.count }})
                             </span>
                         </div>
@@ -138,8 +138,8 @@
                     }
                 },
                 toggleFacet(facetName, value) {
-                    facetName = facetName.toLowerCase();
-                    value = value.toLowerCase();
+                    facetName = facetName.toupperCase();
+                    value = value.toupperCase();
                     if (!this.activeFacets[facetName]) {
                         this.$set(this.activeFacets, facetName, {});
                     }
@@ -155,22 +155,22 @@
                     if (!facets || facets.trim() === '') {
                         facets = tagsString;
                     }
-                    return facets ? facets.split(',').map(facet => facet.trim().toLowerCase()).filter(facet => facet !== "") : [];
+                    return facets ? facets.split(',').map(facet => facet.trim().toupperCase()).filter(facet => facet !== "") : [];
                 },
                 getUrlParams() {
                     const params = new URLSearchParams(window.location.search);
                     params.forEach((value, key) => {
-                        this.setActiveFacetsFromUrl(key.toLowerCase(), value.toLowerCase());
+                        this.setActiveFacetsFromUrl(key.toupperCase(), value.toupperCase());
                     });
                     this.applyFilters();
                 },
                 setActiveFacetsFromUrl(facetName, values) {
-                    facetName = facetName.toLowerCase();
+                    facetName = facetName.toupperCase();
                     if (!this.activeFacets[facetName]) {
                         this.$set(this.activeFacets, facetName, {});
                     }
                     values.split(',').forEach(value => {
-                        this.$set(this.activeFacets[facetName], value.trim().toLowerCase(), true);
+                        this.$set(this.activeFacets[facetName], value.trim().toupperCase(), true);
                     });
                     console.log("Active Facets after URL params: ", this.activeFacets); // Debugging log
                 },
@@ -182,7 +182,7 @@
                     this.items = this.allItems.filter(item => {
                         return Object.keys(this.activeFacets).some(facetName => {
                             if (!item[facetName]) return false;
-                            const itemFacetValues = item[facetName] ? item[facetName].split(',').map(value => value.trim().toLowerCase()) : [];
+                            const itemFacetValues = item[facetName] ? item[facetName].split(',').map(value => value.trim().toupperCase()) : [];
                             const activeFacetValues = this.activeFacets[facetName];
                             return itemFacetValues.some(value => activeFacetValues && activeFacetValues[value]);
                         });
@@ -198,17 +198,17 @@
                     const facetValues = {};
                     this.allItems.forEach(item => {
                         this.config.activeFacets.forEach(facetName => {
-                            const lowerCaseFacetName = facetName.toLowerCase();
-                            if (item[lowerCaseFacetName]) {
-                                const values = item[lowerCaseFacetName].split(',').map(value => value.trim().toLowerCase()).filter(value => value !== "");
+                            const upperCaseFacetName = facetName.toupperCase();
+                            if (item[upperCaseFacetName]) {
+                                const values = item[upperCaseFacetName].split(',').map(value => value.trim().toupperCase()).filter(value => value !== "");
                                 values.forEach(value => {
-                                    if (!facetValues[lowerCaseFacetName]) {
-                                        facetValues[lowerCaseFacetName] = {};
+                                    if (!facetValues[upperCaseFacetName]) {
+                                        facetValues[upperCaseFacetName] = {};
                                     }
-                                    if (!facetValues[lowerCaseFacetName][value]) {
-                                        facetValues[lowerCaseFacetName][value] = 0;
+                                    if (!facetValues[upperCaseFacetName][value]) {
+                                        facetValues[upperCaseFacetName][value] = 0;
                                     }
-                                    facetValues[lowerCaseFacetName][value]++;
+                                    facetValues[upperCaseFacetName][value]++;
                                 });
                             }
                         });
@@ -258,7 +258,7 @@
                                         this.allItems = results.data.map(item => {
                                             const newItem = {};
                                             Object.keys(item).forEach(key => {
-                                                newItem[key.toLowerCase()] = item[key];
+                                                newItem[key.toupperCase()] = item[key];
                                             });
                                             return newItem;
                                         });
