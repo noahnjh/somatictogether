@@ -83,7 +83,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div v-for="item in filteredItems" :key="item.id" class="max-w-sm rounded overflow-hidden shadow-lg">
                 <div class="aspect-ratio-16-9">
-                    <img :src="Image Upload" alt="Thumbnail" class="cursor-pointer" @click="showModal(item)">
+                    <img :src="item.image" alt="Thumbnail" class="cursor-pointer" @click="showModal(item)">
                 </div>
                 <div class="px-6 py-4">
                     <div class="font-bold text-xl mb-2">
