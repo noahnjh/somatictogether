@@ -252,34 +252,23 @@
                         fetch(this.config.dataSourceUrl.trim())
                             .then(response => response.text())
                             .then(csvData => {
-Papa.parse(csvData, {
-    header: true,
-    skipEmptyLines: true,
-    complete: (results) => {
-        this.allItems = results.data.map(item => {
-            const newItem = {};
-            Object.keys(item).forEach(key => {
-                let value = item[key];
-
-                // If this is the Image Upload column, fix Google Drive links
-                if (key.toLowerCase() === "image upload" && value && value.includes("drive.google.com")) {
-                    const match = value.match(/\/d\/([^/]+)\//);
-                    if (match && match[1]) {
-                        value = `https://drive.google.com/uc?export=view&id=${match[1]}`;
-                    }
-                }
-
-                newItem[key.toLowerCase()] = value;
-            });
-            return newItem;
-        });
-        this.items = this.allItems;
-        console.log("Items loaded: ", this.items); // Debugging log
-        this.getUrlParams(); // Apply filters from URL after loading data
-        this.isLoading = false;
-    }
-});
-
+                                 Papa.parse(csvData, {
+                                    header: true,
+                                    skipEmptyLines: true,
+                                    complete: (results) => {
+                                        this.allItems = results.data.map(item => {
+                                            const newItem = {};
+                                            Object.keys(item).forEach(key => {
+                                                newItem[key.toLowerCase()] = item[key];
+                                            });
+                                            return newItem;
+                                        });
+                                        this.items = this.allItems;
+                                        console.log("Items loaded: ", this.items); // Debugging log
+                                        this.getUrlParams(); // Apply filters from URL after loading data
+                                        this.isLoading = false;
+                                    }
+                                });
                             });
                     });
             }
