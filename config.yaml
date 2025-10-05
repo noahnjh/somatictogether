@@ -1,5 +1,5 @@
 # URL from which to load CSV data. This can be changed to point to a new data source as needed.
-dataSourceUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRRzbdMEqy9_BzQkuRgdtQ2H_hEWDx8rYXloupdmmhq-NRz_fYeHOvcK07Kb8soLQGxr94xj8sTFlv4/pub?output=csv"
+dataSourceUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRRzbdMEqy9_BzQkuRgdtQ2H_hEWDx8rYXloupdmmhq-NRz_fYeHOvcK07Kb8soLQGxr94xj8sTFlv4/pub?gid=0&single=true&output=csv"
 
 # Number of characters to show in the item description before truncating. This value can be adjusted to show more or less text.
 descriptionLength: 100
