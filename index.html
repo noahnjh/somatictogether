@@ -105,6 +105,17 @@
   <button @click="searchByLocation" class="btn btn-primary">Search Nearby</button>
   <button @click="clearLocationSearch" class="btn btn-ghost">Clear</button>
 </div>
+<!-- 🔎 Keyword Search Bar -->
+<div class="mb-6 flex items-center space-x-2 bg-gray-100 p-3 rounded shadow-sm">
+  <input
+    v-model="keywordSearch"
+    type="text"
+    placeholder="Search by name, title, or description..."
+    class="input input-bordered w-full"
+  />
+  <button @click="clearKeywordSearch" class="btn btn-ghost">Clear</button>
+</div>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div v-for="item in filteredItems" :key="item.id" class="max-w-sm rounded overflow-hidden shadow-lg">
                 <div class="aspect-ratio-16-9">
@@ -169,6 +180,7 @@
                 searchRadius: 50,
                 searchUnits: 'miles',
                 userCoordinates: null,
+                keywordSearch: '',
             },
             methods: {
                 showModal(item) {
@@ -300,6 +312,9 @@ async searchByLocation() {
                       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
                       return R * c; // Distance
                 },
+                clearKeywordSearch() {
+                  this.keywordSearch = '';
+                },
             },
             computed: {
                 facetCounts() {
@@ -336,9 +351,21 @@ async searchByLocation() {
                     });
                     return result;
                 },
-                filteredItems() {
-                    return this.items;
-                },
+filteredItems() {
+  let filtered = this.items;
+
+  // 🔍 Keyword search filter
+  if (this.keywordSearch.trim() !== '') {
+    const query = this.keywordSearch.toLowerCase();
+    filtered = filtered.filter(item =>
+      (item.name && item.name.toLowerCase().includes(query)) ||
+      (item.title && item.title.toLowerCase().includes(query)) ||
+      (item.description && item.description.toLowerCase().includes(query))
+    );
+  }
+
+  return filtered;
+},
                 activeFiltersText() {
                     const filters = [];
                     Object.keys(this.activeFacets).forEach(facetName => {
