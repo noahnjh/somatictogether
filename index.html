@@ -82,7 +82,30 @@
                 </div>
             </div>
         </div>
+<!-- 🔍 Location Search Bar -->
+<div class="mb-6 flex flex-wrap items-center space-x-2 bg-gray-100 p-3 rounded shadow-sm">
+  <input
+    v-model="searchLocation"
+    type="text"
+    placeholder="Enter your city or zip/postal code"
+    class="input input-bordered w-64"
+  />
 
+  <select v-model="searchRadius" class="select select-bordered">
+    <option value="25">25</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+    <option value="250">250</option>
+  </select>
+
+  <select v-model="searchUnits" class="select select-bordered">
+    <option value="miles">Miles</option>
+    <option value="km">Kilometers</option>
+  </select>
+
+  <button @click="searchByLocation" class="btn btn-primary">Search Nearby</button>
+  <button @click="clearLocationSearch" class="btn btn-ghost">Clear</button>
+</div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div v-for="item in filteredItems" :key="item.id" class="max-w-sm rounded overflow-hidden shadow-lg">
                 <div class="aspect-ratio-16-9">
@@ -143,6 +166,10 @@
                 activeFacets: {},
                 isLoading: true,
                 config: {}
+                searchLocation: '',
+                searchRadius: 50,
+                searchUnits: 'miles',
+                userCoordinates: null,
             },
             methods: {
                 showModal(item) {
@@ -213,6 +240,15 @@
                     this.activeFacets = {};
                     this.items = this.allItems;
                 }
+                searchByLocation() {
+                alert('Location search will be implemented next!');
+                },
+                clearLocationSearch() {
+                     this.searchLocation = '';
+                      this.searchRadius = 50;
+                      this.searchUnits = 'miles';
+                      this.userCoordinates = null;
+                },
             },
             computed: {
                 facetCounts() {
