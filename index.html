@@ -44,16 +44,50 @@
             height: 100%;
             border: 0;
         }
-        /* Force all inputs and selects to use white background and black text */
+/* --- Directory UI Color Cleanup --- */
+
+/* Search & filter input boxes */
 input.input-bordered,
-select.select-bordered {
-  background-color: white !important;
-  color: black !important;
-  border-color: #d1d5db !important; /* Tailwind gray-300 */
+select.select-bordered,
+textarea.input-bordered {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #d1d5db !important; /* gray-300 */
 }
 
-input::placeholder {
-  color: #6b7280; /* gray-500 for placeholder text */
+/* Placeholder text */
+input::placeholder,
+textarea::placeholder {
+  color: #6b7280 !important; /* gray-500 */
+}
+
+/* Filter chips / tags */
+span.inline-block.bg-gray-200 {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #d1d5db !important;
+  transition: background-color 0.2s ease;
+}
+
+span.inline-block.bg-gray-200:hover {
+  background-color: #f3f4f6 !important; /* gray-100 hover */
+}
+
+/* Active tag styling (the blue ones) */
+span.inline-block.bg-blue-500 {
+  background-color: #2563eb !important; /* Tailwind blue-600 */
+  color: #ffffff !important;
+}
+
+/* Buttons for filters/search actions */
+button.btn {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+button.btn:hover {
+  background-color: #f3f4f6 !important;
 }
     </style>
 </head>
