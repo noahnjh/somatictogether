@@ -89,6 +89,24 @@ button.btn {
 button.btn:hover {
   background-color: #f3f4f6 !important;
 }
+/* --- Remove black outline around filters --- */
+
+/* Remove dark border from the filter container */
+.filter-container,
+.filters-box,
+div.bg-gray-800,
+div.bg-gray-900 {
+  border: none !important;
+  background-color: #ffffff !important;
+}
+
+/* Remove the dark focus ring on filter elements */
+input:focus,
+select:focus,
+button:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 2px #93c5fd !important; /* subtle blue focus ring for accessibility */
+}    
     </style>
 </head>
 
