@@ -95,7 +95,7 @@ button.btn:hover {
     <body class="bg-white">
     <div id="app" class="p-5">
         <!-- 🔎 Keyword Search Bar -->
-<div class="mb-6 flex items-center space-x-2 bg-white text-black p-3 rounded shadow-sm border border-gray-300">
+<div class="mb-6 flex items-center space-x-2 bg-white text-black p-3 rounded shadow-sm border-gray-300">
   <input
     v-model="keywordSearch"
     type="text"
@@ -129,7 +129,7 @@ button.btn:hover {
   <button @click="searchByLocation" class="btn btn-primary">Search Nearby</button>
   <button @click="clearLocationSearch" class="btn btn-ghost">Clear</button>
 </div>
-        <div role="alert" class="alert mb-2 bg-white text-black p-3 rounded shadow-sm border gray-300">
+        <div role="alert" class="alert mb-2 bg-white text-black p-3 rounded shadow-sm border border gray-300">
             <div v-if="isLoading" class="loading-container">
                 Loading...
             </div>
