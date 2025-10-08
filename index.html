@@ -44,6 +44,17 @@
             height: 100%;
             border: 0;
         }
+        /* Force all inputs and selects to use white background and black text */
+input.input-bordered,
+select.select-bordered {
+  background-color: white !important;
+  color: black !important;
+  border-color: #d1d5db !important; /* Tailwind gray-300 */
+}
+
+input::placeholder {
+  color: #6b7280; /* gray-500 for placeholder text */
+}
     </style>
 </head>
 
