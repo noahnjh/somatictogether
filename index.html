@@ -89,49 +89,13 @@ button.btn {
 button.btn:hover {
   background-color: #f3f4f6 !important;
 }
-/* --- Remove black outline around filters --- */
-
-/* Remove dark border from the filter container */
-.filter-container,
-.filters-box,
-div.bg-gray-800,
-div.bg-gray-900 {
-  border: none !important;
-  background-color: #ffffff !important;
-}
-
-/* Remove the dark focus ring on filter elements */
-input:focus,
-select:focus,
-button:focus {
-  outline: none !important;
-  box-shadow: 0 0 0 2px #93c5fd !important; /* subtle blue focus ring for accessibility */
-}    
-/* --- Remove black border around entire filters group --- */
-div[role="group"],
-div.filters-wrapper,
-div.facets-container,
-div.filter-container,
-fieldset {
-  border: none !important;
-  background-color: #ffffff !important;
-  box-shadow: none !important;
-}
-
-/* Optional: tighten spacing after removing border */
-div[role="group"],
-fieldset {
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
     </style>
 </head>
 
     <body class="bg-white">
     <div id="app" class="p-5">
         <!-- 🔎 Keyword Search Bar -->
-<div class="mb-6 flex items-center space-x-2 bg-white text-black p-3 rounded shadow-sm border-gray-300">
+<div class="mb-6 flex items-center space-x-2 bg-white text-black p-3 rounded shadow-sm border border-gray-300">
   <input
     v-model="keywordSearch"
     type="text"
