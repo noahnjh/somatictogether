@@ -107,6 +107,24 @@ button:focus {
   outline: none !important;
   box-shadow: 0 0 0 2px #93c5fd !important; /* subtle blue focus ring for accessibility */
 }    
+/* --- Remove black border around entire filters group --- */
+div[role="group"],
+div.filters-wrapper,
+div.facets-container,
+div.filter-container,
+fieldset {
+  border: none !important;
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+/* Optional: tighten spacing after removing border */
+div[role="group"],
+fieldset {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
     </style>
 </head>
 
