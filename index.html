@@ -94,40 +94,42 @@ button.btn:hover {
 
     <body class="bg-white">
     <div id="app" class="p-5">
-        <!-- 🔎 Keyword Search Bar -->
-<div class="mb-6 flex items-center space-x-2 bg-white text-black p-3 rounded shadow-sm border-gray-300">
-  <input
-    v-model="keywordSearch"
-    type="text"
-    placeholder="Search by name, title, or description..."
-    class="input input-bordered w-full"
-  />
-  <button @click="clearKeywordSearch" class="btn btn-ghost">Clear</button>
-</div>
+<!-- 🔍 Unified Search Bar -->
+<div class="search-container bg-white text-black p-4 rounded shadow-sm mb-6 border border-gray-300">
+  <div class="flex flex-col md:flex-row md:items-center md:space-x-4">
+    <!-- Keyword Search -->
+    <div class="flex flex-1 items-center space-x-2 mb-3 md:mb-0">
+      <input
+        v-model="keywordSearch"
+        type="text"
+        placeholder="Search by name, title, or description..."
+        class="input input-bordered w-full"
+      />
+      <button @click="clearKeywordSearch" class="btn btn-ghost">Clear</button>
+    </div>
 
-<!-- 🔍 Location Search Bar -->
-<div class="mb-6 flex flex-wrap items-center space-x-2 bg-white text-black p-3 rounded shadow-sm border-gray-300">
-  <input
-    v-model="searchLocation"
-    type="text"
-    placeholder="Enter your city or zip/postal code"
-    class="input input-bordered w-64"
-  />
-
-  <select v-model="searchRadius" class="select select-bordered">
-    <option value="25">25</option>
-    <option value="50">50</option>
-    <option value="100">100</option>
-    <option value="250">250</option>
-  </select>
-
-  <select v-model="searchUnits" class="select select-bordered">
-    <option value="miles">Miles</option>
-    <option value="km">Kilometers</option>
-  </select>
-
-  <button @click="searchByLocation" class="btn btn-primary">Search Nearby</button>
-  <button @click="clearLocationSearch" class="btn btn-ghost">Clear</button>
+    <!-- Location Search -->
+    <div class="flex flex-1 items-center space-x-2">
+      <input
+        v-model="searchLocation"
+        type="text"
+        placeholder="Enter city or postal code"
+        class="input input-bordered flex-1"
+      />
+      <select v-model="searchRadius" class="select select-bordered">
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="250">250</option>
+      </select>
+      <select v-model="searchUnits" class="select select-bordered">
+        <option value="miles">mi</option>
+        <option value="km">km</option>
+      </select>
+      <button @click="searchByLocation" class="btn btn-primary">Search</button>
+      <button @click="clearLocationSearch" class="btn btn-ghost">Clear</button>
+    </div>
+  </div>
 </div>
         <div role="alert" class="alert mb-2 bg-white text-black p-3 rounded shadow-sm border-0">
             <div v-if="isLoading" class="loading-container">
