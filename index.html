@@ -94,9 +94,10 @@ button.btn:hover {
 
     <body class="bg-white">
     <div id="app" class="p-5">
-<!-- 🔍 Unified Search Bar -->
+<!-- 🔍 Unified Search Bar (Responsive) -->
 <div class="search-container bg-white text-black p-4 rounded shadow-sm mb-6 border border-gray-300">
   <div class="flex flex-col md:flex-row md:items-center md:space-x-4">
+
     <!-- Keyword Search -->
     <div class="flex flex-1 items-center space-x-2 mb-3 md:mb-0">
       <input
@@ -108,29 +109,33 @@ button.btn:hover {
       <button @click="clearKeywordSearch" class="btn btn-ghost">Clear</button>
     </div>
 
-    <!-- Location Search -->
-    <div class="flex flex-1 items-center space-x-2">
+    <!-- Location Search (Wrapped on Mobile) -->
+    <div class="flex flex-wrap flex-1 gap-2 items-center">
       <input
         v-model="searchLocation"
         type="text"
         placeholder="Enter city or postal code"
-        class="input input-bordered flex-1"
+        class="input input-bordered flex-grow min-w-[200px]"
       />
-      <select v-model="searchRadius" class="select select-bordered">
-        <option value="25">25</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-        <option value="250">250</option>
-      </select>
-      <select v-model="searchUnits" class="select select-bordered">
-        <option value="miles">mi</option>
-        <option value="km">km</option>
-      </select>
-      <button @click="searchByLocation" class="btn btn-primary">Search</button>
-      <button @click="clearLocationSearch" class="btn btn-ghost">Clear</button>
+      <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+        <select v-model="searchRadius" class="select select-bordered w-20">
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="250">250</option>
+        </select>
+        <select v-model="searchUnits" class="select select-bordered w-20">
+          <option value="miles">mi</option>
+          <option value="km">km</option>
+        </select>
+        <button @click="searchByLocation" class="btn btn-primary w-full sm:w-auto">Search</button>
+        <button @click="clearLocationSearch" class="btn btn-ghost w-full sm:w-auto">Clear</button>
+      </div>
     </div>
+
   </div>
 </div>
+
         <div role="alert" class="alert mb-2 bg-white text-black p-3 rounded shadow-sm border border-0">
             <div v-if="isLoading" class="loading-container">
                 Loading...
