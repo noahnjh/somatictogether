@@ -164,7 +164,7 @@ button.btn:hover {
                     </div>
                     <div v-for="facetInfo in facetCounts" :key="facetInfo.facet">
                         <div v-if="visibleFacets[facetInfo.facet]">
-                            <h3 class="text-2xl font-bold tracking-tight text-gray-900 m-2">{{ facetInfo.facet }}</h3>
+                            <h3 class="text-2xl font-bold tracking-tight text-gray-900 m-2">{{ getOriginalFacetHeader(facetInfo.facet) }}</h3>
                             <span v-for="valueInfo in facetInfo.values" :key="valueInfo.value"
                                 :class="{'bg-blue-500 text-white': activeFacets[facetInfo.facet] && activeFacets[facetInfo.facet][valueInfo.value], 'bg-gray-200 text-gray-700': !(activeFacets[facetInfo.facet] && activeFacets[facetInfo.facet][valueInfo.value])}"
                                 class="inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2 cursor-pointer"
@@ -245,6 +245,10 @@ button.btn:hover {
                 keywordSearch: '',
             },
             methods: {
+                getOriginalFacetHeader(facetName) {
+                  const match = this.config.activeFacets.find(f => f.toLowerCase() === facetName.toLowerCase());
+                  return match || facetName;
+                    },               
                 getOriginalFacetValue(facetName, value) {
                   // Find the original-cased version of the value from allItems
                   for (const item of this.allItems) {
