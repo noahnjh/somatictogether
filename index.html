@@ -151,29 +151,37 @@ button.btn:hover {
             </div>
             <div class="flex-1">
                 <div class="scrollable-tags">
-                    <div class="flex flex-wrap">
-<button @click="resetFilters" class="btn btn-sm mb-4 mr-2 drop-shadow">
-  <i class="fa fa-times" aria-hidden="true"></i> Clear Filters
-</button>
-                        <div v-for="facetInfo in facetCounts" :key="facetInfo.facet" class="mr-2">
-                           <button @click="toggleVisibility(facetInfo.facetKey)" class="btn btn-sm drop-shadow">
-                                <i class="fas fa-filter"></i>
-                                {{ visibleFacets[facetInfo.facet] ? ' ' + facetInfo.facet : ' ' + facetInfo.facet }}
-                            </button>
-                        </div>
-                    </div>
-                    <div v-for="facetInfo in facetCounts" :key="facetInfo.facet">
-                        <div v-if="visibleFacets[facetInfo.facet]">
-                            <h3 class="text-2xl font-bold tracking-tight text-gray-900 m-2">{{ getOriginalFacetHeader(facetInfo.facet) }}</h3>
-                            <span v-for="valueInfo in facetInfo.values" :key="valueInfo.value"
-                                :class="{'bg-blue-500 text-white': activeFacets[facetInfo.facet] && activeFacets[facetInfo.facet][valueInfo.value], 'bg-gray-200 text-gray-700': !(activeFacets[facetInfo.facet] && activeFacets[facetInfo.facet][valueInfo.value])}"
-                                class="inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2 cursor-pointer"
-                                @click="toggleFacet(facetInfo.facetKey, valueInfo.value.toLowerCase())"
-                                  {{ getOriginalFacetValue(facetInfo.facet, valueInfo.value) }} ({{ valueInfo.count }})
-                                    </span>
-                            </span>
-                        </div>
-                    </div>
+<div class="flex flex-wrap">
+  <button @click="resetFilters" class="btn btn-sm mb-4 mr-2 drop-shadow">
+    <i class="fa fa-times" aria-hidden="true"></i> Clear Filters
+  </button>
+
+  <div v-for="facetInfo in facetCounts" :key="facetInfo.facetKey" class="mr-2">
+    <button @click="toggleVisibility(facetInfo.facetKey)" class="btn btn-sm drop-shadow">
+      <i class="fas fa-filter"></i>
+      {{ facetInfo.facet }}
+    </button>
+  </div>
+</div>
+
+<div v-for="facetInfo in facetCounts" :key="'panel-' + facetInfo.facetKey">
+  <div v-if="visibleFacets[facetInfo.facetKey]">
+    <h3 class="text-2xl font-bold tracking-tight text-gray-900 m-2">{{ facetInfo.facet }}</h3>
+
+    <span
+      v-for="valueInfo in facetInfo.values"
+      :key="valueInfo.value"
+      :class="{
+        'bg-blue-500 text-white': activeFacets[facetInfo.facetKey] && activeFacets[facetInfo.facetKey][valueInfo.value],
+        'bg-gray-200 text-gray-700': !(activeFacets[facetInfo.facetKey] && activeFacets[facetInfo.facetKey][valueInfo.value])
+      }"
+      class="inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2 cursor-pointer"
+      @click="toggleFacet(facetInfo.facetKey, valueInfo.value)"
+    >
+      {{ getOriginalFacetValue(facetInfo.facetKey, valueInfo.value) }} ({{ valueInfo.count }})
+    </span>
+  </div>
+</div>
                 </div>
             </div>
         </div>
