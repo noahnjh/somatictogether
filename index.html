@@ -156,7 +156,7 @@ button.btn:hover {
   <i class="fa fa-times" aria-hidden="true"></i> Clear Filters
 </button>
                         <div v-for="facetInfo in facetCounts" :key="facetInfo.facet" class="mr-2">
-                            <button @click="toggleVisibility(facetInfo.facet)" class="btn btn-sm drop-shadow">
+                           <button @click="toggleVisibility(facetInfo.facetKey)" class="btn btn-sm drop-shadow">
                                 <i class="fas fa-filter"></i>
                                 {{ visibleFacets[facetInfo.facet] ? ' ' + facetInfo.facet : ' ' + facetInfo.facet }}
                             </button>
@@ -168,7 +168,7 @@ button.btn:hover {
                             <span v-for="valueInfo in facetInfo.values" :key="valueInfo.value"
                                 :class="{'bg-blue-500 text-white': activeFacets[facetInfo.facet] && activeFacets[facetInfo.facet][valueInfo.value], 'bg-gray-200 text-gray-700': !(activeFacets[facetInfo.facet] && activeFacets[facetInfo.facet][valueInfo.value])}"
                                 class="inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2 cursor-pointer"
-                                @click="toggleFacet(facetInfo.facet.toLowerCase(), valueInfo.value.toLowerCase())">
+                                @click="toggleFacet(facetInfo.facetKey, valueInfo.value.toLowerCase())"
                                   {{ getOriginalFacetValue(facetInfo.facet, valueInfo.value) }} ({{ valueInfo.count }})
                                     </span>
                             </span>
@@ -421,10 +421,15 @@ async searchByLocation() {
                             count: facetValues[facetName][value]
                         }));
                         facets.sort((a, b) => b.count - a.count);
-                        result.push({
-                            facet: facetName,
-                            values: facets
-                        });
+// Find the original-cased version of the facet name from config.yaml
+const originalFacetName =
+  this.config.activeFacets.find(f => f.toLowerCase() === facetName.toLowerCase()) || facetName;
+
+result.push({
+  facet: originalFacetName, // display name (original case)
+  facetKey: facetName.toLowerCase(), // for internal lookups
+  values: facets
+});
                     });
                     return result;
                 },
