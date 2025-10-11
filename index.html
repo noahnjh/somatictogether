@@ -221,25 +221,68 @@ button.btn:hover {
             <div v-if="selectedItem" class="fixed inset-0 bg-gray-200 bg-opacity-75 overflow-y-auto h-full w-full"
                 @click.self="selectedItem = null">
                 <div class="relative top-20 mx-auto p-5 border w-3/4 shadow-lg rounded-md bg-white">
-                    <div class="modal-card text-left">
-                        <img :src="selectedItem.image" alt="Thumbnail"
-                        class="w-full max-h-96 object-contain rounded mb-4">
-                            <h2 class="text-2xl font-bold mb-2">{{ selectedItem.name }}</h2>
-                            <h4 class="text-lg text-gray-600 mb-4">{{ selectedItem.title }}</h4>
-                            <p class="text-gray-800 mb-4 whitespace-pre-line">{{ selectedItem.description }}</p>
-                            <p v-if="selectedItem.website">
-                            <strong>Website:</strong>
-                                <a :href="selectedItem.website" target="_blank" class="text-blue-600 hover:underline">
-                                    {{ selectedItem.website }}
-                                </a>
-                            </p>
-                        <p v-if="selectedItem.booking">
-                            <strong>Booking:</strong>
-                                <a :href="selectedItem.booking" target="_blank" class="text-blue-600 hover:underline">
-                                    {{ selectedItem.booking }}
-                                </a>
-                         </p>
-                    </div>
+<div class="modal-card text-left">
+  <!-- Image -->
+  <img
+    :src="selectedItem.image || 'default-thumbnail.jpg'"
+    alt="Thumbnail"
+    class="w-full max-h-96 object-contain rounded mb-4"
+  />
+
+  <!-- Name + Pronouns -->
+  <h2 class="text-2xl font-bold mb-1">
+    {{ selectedItem.name }}
+    <span v-if="selectedItem.pronouns && selectedItem.pronouns.trim() !== ''">
+      ({{ selectedItem.pronouns }})
+    </span>
+  </h2>
+
+  <!-- Title -->
+  <h4 class="text-lg text-gray-600 mb-3">
+    {{ selectedItem.title }}
+  </h4>
+
+  <!-- Location -->
+  <p class="text-sm text-gray-700 mb-3 flex items-center">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5s-3 1.343-3 3 1.343 3 3 3z" />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M12 22s8-7.333 8-13a8 8 0 10-16 0c0 5.667 8 13 8 13z" />
+    </svg>
+    {{ [selectedItem.city, selectedItem.state || selectedItem['state or province'], selectedItem.country].filter(Boolean).join(', ') }}
+  </p>
+
+    <!-- Description -->
+  <p class="text-gray-800 mb-4 whitespace-pre-line">
+    {{ selectedItem.description }}
+  </p>
+
+  <!-- Website -->
+  <p v-if="selectedItem.website">
+    <strong>Website:</strong>
+    <a
+      :href="selectedItem.website"
+      target="_blank"
+      class="text-blue-600 hover:underline break-words"
+    >
+      {{ selectedItem.website }}
+    </a>
+  </p>
+
+  <!-- Booking -->
+  <p v-if="selectedItem.booking">
+    <strong>Booking:</strong>
+    <a
+      :href="selectedItem.booking"
+      target="_blank"
+      class="text-blue-600 hover:underline break-words"
+    >
+      {{ selectedItem.booking }}
+    </a>
+  </p>
+</div>
+
                         <div class="mt-6 text-center">
                             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                 @click="selectedItem = null">Close</button>
