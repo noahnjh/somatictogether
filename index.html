@@ -98,6 +98,19 @@ button.btn:hover {
     width: 100%;
   }
 }
+      /* --- Smooth Expand/Collapse Animation for Cards --- */
+.card-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.card-content.expanded {
+  max-height: 1000px; /* large enough to fit full content */
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
     </style>
 </head>
 
@@ -187,24 +200,51 @@ button.btn:hover {
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div v-for="item in filteredItems" :key="item.id" class="max-w-sm rounded overflow-hidden shadow-lg">
-                <div class="aspect-ratio-16-9">
-                    <img :src="item.image" alt="Thumbnail" class="cursor-pointer" @click="showModal(item)">
-                </div>
-                <div class="px-6 py-4">
-                    <div class="font-bold text-xl mb-2">
-                        <a href="#" class="text-blue-700 hover:text-blue-900" @click.prevent="showModal(item)">
-                            {{ item.title }}
-                        </a>
-                    </div>
-                    <p>{{ trimDescription(item.description) }}</p>
-                    <div class="mt-2">
-                        <span
-                            class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                            v-for="tag in item.tags ? item.tags.split(',') : []" :key="tag">{{ tag }}</span>
-                    </div>
-                </div>
-            </div>
+           <div v-for="item in filteredItems" :key="item.id" class="max-w-sm rounded overflow-hidden shadow-lg">
+  <div class="aspect-ratio-16-9">
+    <img :src="item.image" alt="Thumbnail" class="cursor-pointer" @click="toggleCard(item)">
+  </div>
+
+  <div class="px-6 py-4">
+    <div class="font-bold text-xl mb-2 cursor-pointer text-blue-700 hover:text-blue-900" @click="toggleCard(item)">
+      {{ item.name || item.title }}
+    </div>
+
+    <!-- Always visible preview -->
+    <p>{{ trimDescription(item.description) }}</p>
+
+    <!-- Expandable section -->
+    <div :class="['card-content', { expanded: expandedCard === item }]">
+      <p><strong>Pronouns:</strong> {{ item.pronouns }}</p>
+      <p><strong>Title:</strong> {{ item.title }}</p>
+      <p><strong>Address:</strong> {{ item.address }}, {{ item.city }}, {{ item.state }}, {{ item.country }}</p>
+      <p><strong>Session Format:</strong> {{ item['session format'] }}</p>
+      <p><strong>Area of Support:</strong> {{ item['area of support'] }}</p>
+      <p><strong>Modality of Care:</strong> {{ item['modality of care'] }}</p>
+      <p><strong>Sexuality:</strong> {{ item.sexuality }}</p>
+      <p><strong>Website:</strong>
+        <a :href="item.website" target="_blank" class="text-blue-600 hover:underline">{{ item.website }}</a>
+      </p>
+      <p><strong>Booking:</strong>
+        <a :href="item.booking" target="_blank" class="text-blue-600 hover:underline">{{ item.booking }}</a>
+      </p>
+      <p><strong>Email:</strong> {{ item.email }}</p>
+      <p><strong>Phone:</strong> {{ item.phone }}</p>
+      <div class="mt-2">
+        <span
+          class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+          v-for="tag in item.tags ? item.tags.split(',') : []"
+          :key="tag">{{ tag }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Toggle button -->
+    <button class="btn btn-sm mt-3 w-full" @click="toggleCard(item)">
+      {{ expandedCard === item ? 'Show Less' : 'Show More' }}
+    </button>
+  </div>
+</div>
         </div>
             <div v-if="selectedItem" class="fixed inset-0 bg-gray-200 bg-opacity-75 overflow-y-auto h-full w-full"
                 @click.self="selectedItem = null">
@@ -251,6 +291,7 @@ button.btn:hover {
                 searchUnits: 'miles',
                 userCoordinates: null,
                 keywordSearch: '',
+                expandedCard: null,
             },
             methods: {
                 getOriginalFacetHeader(facetName) {
@@ -293,6 +334,9 @@ button.btn:hover {
                         this.$set(this.activeFacets[facetName], value, true);
                     }
                     this.applyFilters();
+                },
+                    toggleCard(item) {
+                     this.expandedCard = this.expandedCard === item ? null : item;
                 },
                 parseFacets(facetsString, tagsString) {
                     let facets = facetsString;
