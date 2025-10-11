@@ -230,7 +230,7 @@ button.btn:hover {
   />
 
   <!-- Name + Pronouns -->
-  <h2 class="text-2xl font-bold mb-1">
+  <h2 class="text-2xl font-bold mb-1 text-black">
     {{ selectedItem.name }}
     <span v-if="selectedItem.pronouns && selectedItem.pronouns.trim() !== ''">
       ({{ selectedItem.pronouns }})
@@ -253,13 +253,55 @@ button.btn:hover {
     {{ [selectedItem.city, selectedItem.state || selectedItem['state or province'], selectedItem.country].filter(Boolean).join(', ') }}
   </p>
 
-    <!-- Description -->
+  <!-- Full Description -->
   <p class="text-gray-800 mb-4 whitespace-pre-line">
     {{ selectedItem.description }}
   </p>
 
+  <!-- Tags for Session Format -->
+  <div v-if="selectedItem['session format']" class="mb-3">
+    <strong>Session Format:</strong>
+    <div class="flex flex-wrap mt-1">
+      <span
+        v-for="format in selectedItem['session format'].split(',').map(f => f.trim()).filter(Boolean)"
+        :key="format"
+        class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm mr-2 mb-2"
+      >
+        {{ format }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Tags for Area of Support -->
+  <div v-if="selectedItem['area of support']" class="mb-3">
+    <strong>Area of Support:</strong>
+    <div class="flex flex-wrap mt-1">
+      <span
+        v-for="area in selectedItem['area of support'].split(',').map(a => a.trim()).filter(Boolean)"
+        :key="area"
+        class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm mr-2 mb-2"
+      >
+        {{ area }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Tags for Modality of Care -->
+  <div v-if="selectedItem['modality of care']" class="mb-3">
+    <strong>Modality of Care:</strong>
+    <div class="flex flex-wrap mt-1">
+      <span
+        v-for="modality in selectedItem['modality of care'].split(',').map(m => m.trim()).filter(Boolean)"
+        :key="modality"
+        class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm mr-2 mb-2"
+      >
+        {{ modality }}
+      </span>
+    </div>
+  </div>
+
   <!-- Website -->
-  <p v-if="selectedItem.website">
+  <p v-if="selectedItem.website" class="mb-2">
     <strong>Website:</strong>
     <a
       :href="selectedItem.website"
@@ -271,7 +313,7 @@ button.btn:hover {
   </p>
 
   <!-- Booking -->
-  <p v-if="selectedItem.booking">
+  <p v-if="selectedItem.booking" class="mb-2">
     <strong>Booking:</strong>
     <a
       :href="selectedItem.booking"
@@ -281,6 +323,38 @@ button.btn:hover {
       {{ selectedItem.booking }}
     </a>
   </p>
+
+  <!-- Contact Email -->
+  <p v-if="selectedItem.email" class="mb-2">
+    <strong>Email:</strong>
+    <a
+      :href="'mailto:' + selectedItem.email"
+      class="text-blue-600 hover:underline"
+    >
+      {{ selectedItem.email }}
+    </a>
+  </p>
+
+  <!-- Contact Phone -->
+  <p v-if="selectedItem.phone" class="mb-2">
+    <strong>Phone:</strong> {{ selectedItem.phone }}
+  </p>
+
+  <!-- Social Media Links -->
+  <div v-if="selectedItem.instagram || selectedItem.facebook || selectedItem.linkedin" class="mt-4">
+    <strong>Connect:</strong>
+    <div class="flex space-x-4 mt-2">
+      <a v-if="selectedItem.instagram" :href="selectedItem.instagram" target="_blank" class="text-gray-700 hover:text-pink-500">
+        <i class="fab fa-instagram fa-lg"></i>
+      </a>
+      <a v-if="selectedItem.facebook" :href="selectedItem.facebook" target="_blank" class="text-gray-700 hover:text-blue-600">
+        <i class="fab fa-facebook fa-lg"></i>
+      </a>
+      <a v-if="selectedItem.linkedin" :href="selectedItem.linkedin" target="_blank" class="text-gray-700 hover:text-blue-700">
+        <i class="fab fa-linkedin fa-lg"></i>
+      </a>
+    </div>
+  </div>
 </div>
 
                         <div class="mt-6 text-center">
