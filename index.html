@@ -203,12 +203,6 @@ button.btn:hover {
     <div class="text-gray-700 text-sm mb-2">
       {{ item.title }}
     </div>
-
-    <!-- Truncated Description -->
-    <p class="text-gray-600 text-sm mb-3">
-      {{ trimDescription(item.description) }}
-    </p>
-
     <!-- Location -->
     <p class="text-sm text-gray-700 mb-2 flex items-center">
   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -216,6 +210,10 @@ button.btn:hover {
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-7.333 8-13a8 8 0 10-16 0c0 5.667 8 13 8 13z" />
   </svg>
       {{ [item.city, item.state || item['state or province'], item.country].filter(Boolean).join(', ') }}
+    </p>
+    <!-- Truncated Description -->
+    <p class="text-gray-600 text-sm mb-3">
+      {{ trimDescription(item.description) }}
     </p>
   </div>
 </div>
