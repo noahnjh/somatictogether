@@ -188,9 +188,15 @@ button.btn:hover {
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 <div v-for="item in filteredItems" :key="item.id" class="max-w-sm rounded overflow-hidden shadow-lg bg-white border border-gray-200">
-  <div class="aspect-ratio-16-9">
-    <img :src="item.image" alt="Thumbnail" class="cursor-pointer" @click="showModal(item)">
-  </div>
+ <!-- Image with hover zoom effect -->
+<div class="overflow-hidden aspect-ratio-16-9 rounded-t">
+  <img
+    :src="item.image"
+    alt="Thumbnail"
+    class="cursor-pointer w-full h-auto object-cover transition-transform duration-500 ease-in-out hover:scale-110"
+    @click="showModal(item)"
+  >
+</div>
   <div class="px-6 py-4">
 <!-- Name + Pronouns -->
 <div class="font-bold text-xl mb-1">
