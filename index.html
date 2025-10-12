@@ -190,7 +190,7 @@ button.btn:hover {
   <div
     v-for="item in filteredItems"
     :key="item.id"
-    class="max-w-sm rounded overflow-hidden shadow-lg bg-white border border-gray-200 transform transition duration-300 hover:scale-[1.02] hover:shadow-2xl cursor-pointer"
+    class="max-w-sm rounded overflow-hidden shadow-lg bg-white border border-gray-200 transition duration-300 hover:-translate-y-1 hover:shadow-2xl cursor-pointer will-change-transform"
     @click="showModal(item)"
   >
     <!-- Image with hover zoom effect -->
