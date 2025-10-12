@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sheet2web Item Directory</title>
+    <title>Somatic Together Directory</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.0.2/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
@@ -97,6 +97,18 @@ button.btn:hover {
   .search-container input {
     width: 100%;
   }
+}
+/* Change active/selected filter buttons to use green */
+button.active-filter,
+.filter-button-active,
+button.bg-blue-500 {
+  background-color: #137338 !important;
+  border-color: #137338 !important;
+  color: white !important;
+}
+
+button.active-filter:hover {
+  background-color: #0f5e2d !important; /* darker hover tone */
 }
     </style>
 </head>
@@ -366,7 +378,7 @@ button.btn:hover {
 </div>
 
                         <div class="mt-6 text-center">
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            <button class="bg-[#137338] text-white px-4 py-2 rounded hover:bg-green-700 transition"
                                 @click="selectedItem = null">Close</button>
                 </div>
             </div>
