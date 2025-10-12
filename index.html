@@ -690,19 +690,22 @@ filteredItems() {
                                     header: true,
                                     skipEmptyLines: true,
                                     complete: (results) => {
-                                        this.allItems = results.data.map(item => {
-                                            const newItem = {};
-                                            Object.keys(item).forEach(key => {
-                                                newItem[key.toLowerCase()] = item[key];
-                                            });
-                                            return newItem;
-                                        });
-                                        this.items = this.allItems;
-                                        console.log("Items loaded: ", this.items); // Debugging log
-                                        console.log("Example Instagram link: ", this.items[0]['instagram profile link']);
-                                        this.getUrlParams(); // Apply filters from URL after loading data
-                                        this.isLoading = false;
-                                    }
+  this.allItems = results.data.map(item => {
+    const newItem = {};
+    Object.keys(item).forEach(key => {
+      newItem[key.toLowerCase()] = item[key];
+    });
+    return newItem;
+  });
+  this.items = this.allItems;
+  console.log("Items loaded: ", this.items); // Debugging log
+  console.log("Example Instagram link: ", this.items[0]['instagram profile link']);
+  console.log("Raw CSV keys from first item:", Object.keys(results.data[0]));
+  console.log("Raw CSV first item:", results.data[0]);
+  this.getUrlParams(); // Apply filters from URL after loading data
+  this.isLoading = false;
+}
+
                                 });
                             });
                     });
