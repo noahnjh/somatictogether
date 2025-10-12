@@ -187,24 +187,26 @@ button.btn:hover {
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-<div v-for="item in filteredItems" :key="item.id" class="max-w-sm rounded overflow-hidden shadow-lg bg-white border border-gray-200">
- <!-- Image with hover zoom effect -->
+  <div
+    v-for="item in filteredItems"
+    :key="item.id"
+    class="max-w-sm rounded overflow-hidden shadow-lg bg-white border border-gray-200 transform transition duration-300 hover:scale-[1.02] hover:shadow-2xl cursor-pointer"
+    @click="showModal(item)"
+  >
+    <!-- Image with hover zoom effect -->
 <div class="overflow-hidden aspect-ratio-16-9 rounded-t">
   <img
     :src="item.image"
     alt="Thumbnail"
     class="cursor-pointer w-full h-auto object-cover transition-transform duration-500 ease-in-out hover:scale-110"
-    @click="showModal(item)"
   >
 </div>
   <div class="px-6 py-4">
 <!-- Name + Pronouns -->
-<div class="font-bold text-xl mb-1">
-  <a href="#" class="text-black hover:text-gray-800" @click.prevent="showModal(item)">
-    {{ item.name }}
-    <span v-if="item.pronouns && item.pronouns.trim() !== ''"> ({{ item.pronouns }})</span>
-  </a>
-</div>
+      <div class="font-bold text-xl mb-1 text-black">
+        {{ item.name }}
+        <span v-if="item.pronouns && item.pronouns.trim() !== ''"> ({{ item.pronouns }})</span>
+      </div>
     <!-- Title -->
     <div class="text-gray-700 text-sm mb-2">
       {{ item.title }}
