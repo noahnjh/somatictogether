@@ -362,14 +362,14 @@ button.btn:hover {
 
 <!-- Social Media Links -->
 <div
-  v-if="selectedItem['x (twitter) profile link'] || selectedItem['instagram profile link'] || selectedItem['tiktok profile link'] || selectedItem['facebook profile link'] || selectedItem['linkedin profile link']"
+  v-if="hasAnySocialLinks"
   class="mt-4"
 >
   <strong>Connect:</strong>
-  <div class="flex space-x-4 mt-2 text-gray-700">
+  <div class="flex space-x-4 mt-2 text-gray-700 social-icons">
     <!-- X (Twitter) -->
     <a
-      v-if="selectedItem['x (twitter) profile link']"
+      v-if="selectedItem['x (twitter) profile link'] && selectedItem['x (twitter) profile link'].trim() !== ''"
       :href="selectedItem['x (twitter) profile link']"
       target="_blank"
       class="hover:text-[#137338]"
@@ -380,7 +380,7 @@ button.btn:hover {
 
     <!-- Instagram -->
     <a
-      v-if="selectedItem['instagram profile link']"
+      v-if="selectedItem['instagram profile link'] && selectedItem['instagram profile link'].trim() !== ''"
       :href="selectedItem['instagram profile link']"
       target="_blank"
       class="hover:text-[#137338]"
@@ -391,7 +391,7 @@ button.btn:hover {
 
     <!-- TikTok -->
     <a
-      v-if="selectedItem['tiktok profile link']"
+      v-if="selectedItem['tiktok profile link'] && selectedItem['tiktok profile link'].trim() !== ''"
       :href="selectedItem['tiktok profile link']"
       target="_blank"
       class="hover:text-[#137338]"
@@ -402,7 +402,7 @@ button.btn:hover {
 
     <!-- Facebook -->
     <a
-      v-if="selectedItem['facebook profile link']"
+      v-if="selectedItem['facebook profile link'] && selectedItem['facebook profile link'].trim() !== ''"
       :href="selectedItem['facebook profile link']"
       target="_blank"
       class="hover:text-[#137338]"
@@ -413,7 +413,7 @@ button.btn:hover {
 
     <!-- LinkedIn -->
     <a
-      v-if="selectedItem['linkedin profile link']"
+      v-if="selectedItem['linkedin profile link'] && selectedItem['linkedin profile link'].trim() !== ''"
       :href="selectedItem['linkedin profile link']"
       target="_blank"
       class="hover:text-[#137338]"
@@ -423,7 +423,7 @@ button.btn:hover {
     </a>
   </div>
 </div>
-</div>
+
 
                         <div class="mt-6 text-center">
                             <button class="bg-[#137338] text-white px-4 py-2 rounded hover:bg-green-700 transition"
@@ -662,7 +662,20 @@ filteredItems() {
                         }
                     });
                     return filters.length > 0 ? `Filters: ${filters.join(' | ')}` : 'No active filters';
-                }
+                },
+                 hasAnySocialLinks() {
+    if (!this.selectedItem) return false;
+    const socialKeys = [
+      'x (twitter) profile link',
+      'instagram profile link',
+      'tiktok profile link',
+      'facebook profile link',
+      'linkedin profile link'
+    ];
+    return socialKeys.some(
+      key => this.selectedItem[key] && this.selectedItem[key].trim() !== ''
+    );
+  }
             },
             mounted() {
                 this.isLoading = true;
