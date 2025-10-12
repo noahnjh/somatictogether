@@ -360,21 +360,69 @@ button.btn:hover {
     <strong>Phone:</strong> {{ selectedItem.phone }}
   </p>
 
-  <!-- Social Media Links -->
-  <div v-if="selectedItem.instagram || selectedItem.facebook || selectedItem.linkedin" class="mt-4">
-    <strong>Connect:</strong>
-    <div class="flex space-x-4 mt-2">
-      <a v-if="selectedItem.instagram" :href="selectedItem.instagram" target="_blank" class="text-gray-700 hover:text-pink-500">
-        <i class="fab fa-instagram fa-lg"></i>
-      </a>
-      <a v-if="selectedItem.facebook" :href="selectedItem.facebook" target="_blank" class="text-gray-700 hover:text-blue-600">
-        <i class="fab fa-facebook fa-lg"></i>
-      </a>
-      <a v-if="selectedItem.linkedin" :href="selectedItem.linkedin" target="_blank" class="text-gray-700 hover:text-blue-700">
-        <i class="fab fa-linkedin fa-lg"></i>
-      </a>
-    </div>
+<!-- Social Media Links -->
+<div
+  v-if="selectedItem['x (twitter) profile link'] || selectedItem['instagram profile link'] || selectedItem['tiktok profile link'] || selectedItem['facebook profile link'] || selectedItem['linkedin profile link']"
+  class="mt-4"
+>
+  <strong>Connect:</strong>
+  <div class="flex space-x-4 mt-2 text-gray-700">
+    <!-- X (Twitter) -->
+    <a
+      v-if="selectedItem['x (twitter) profile link']"
+      :href="selectedItem['x (twitter) profile link']"
+      target="_blank"
+      class="hover:text-[#137338]"
+      aria-label="X (Twitter)"
+    >
+      <i class="fa-brands fa-x-twitter fa-lg"></i>
+    </a>
+
+    <!-- Instagram -->
+    <a
+      v-if="selectedItem['instagram profile link']"
+      :href="selectedItem['instagram profile link']"
+      target="_blank"
+      class="hover:text-[#137338]"
+      aria-label="Instagram"
+    >
+      <i class="fab fa-instagram fa-lg"></i>
+    </a>
+
+    <!-- TikTok -->
+    <a
+      v-if="selectedItem['tiktok profile link']"
+      :href="selectedItem['tiktok profile link']"
+      target="_blank"
+      class="hover:text-[#137338]"
+      aria-label="TikTok"
+    >
+      <i class="fab fa-tiktok fa-lg"></i>
+    </a>
+
+    <!-- Facebook -->
+    <a
+      v-if="selectedItem['facebook profile link']"
+      :href="selectedItem['facebook profile link']"
+      target="_blank"
+      class="hover:text-[#137338]"
+      aria-label="Facebook"
+    >
+      <i class="fab fa-facebook fa-lg"></i>
+    </a>
+
+    <!-- LinkedIn -->
+    <a
+      v-if="selectedItem['linkedin profile link']"
+      :href="selectedItem['linkedin profile link']"
+      target="_blank"
+      class="hover:text-[#137338]"
+      aria-label="LinkedIn"
+    >
+      <i class="fab fa-linkedin fa-lg"></i>
+    </a>
   </div>
+</div>
 </div>
 
                         <div class="mt-6 text-center">
