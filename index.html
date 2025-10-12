@@ -699,6 +699,7 @@ filteredItems() {
                                         });
                                         this.items = this.allItems;
                                         console.log("Items loaded: ", this.items); // Debugging log
+                                        console.log("Example Instagram link: ", this.items[0]['instagram profile link']);
                                         this.getUrlParams(); // Apply filters from URL after loading data
                                         this.isLoading = false;
                                     }
