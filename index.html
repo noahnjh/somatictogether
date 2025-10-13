@@ -154,8 +154,9 @@ footer, .directory-container, .content-wrapper {
       <input
         v-model="searchLocation"
         type="text"
-        placeholder="Enter city or postal code"
+        placeholder="Search by city or postal code"
         class="input input-bordered flex-grow min-w-[200px]"
+        @keyup.enter="searchByLocation"
       />
       <div class="flex flex-wrap gap-2 w-full sm:w-auto">
         <select v-model="searchRadius" class="select select-bordered w-20">
@@ -651,6 +652,7 @@ async searchByLocation() {
                       this.searchRadius = 50;
                       this.searchUnits = 'miles';
                       this.userCoordinates = null;
+                      this.filteredCards = this.cards; // resets all cards
                 },
                 calculateDistance(lat1, lon1, lat2, lon2, units = 'miles') {
                     const R = units === 'km' ? 6371 : 3958.8; // Earth radius in km or miles
