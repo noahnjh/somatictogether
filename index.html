@@ -652,7 +652,7 @@ async searchByLocation() {
                       this.searchRadius = 50;
                       this.searchUnits = 'miles';
                       this.userCoordinates = null;
-                      this.filteredCards = this.cards; // resets all cards
+                      this.items = this.allItems; // resets all cards
                 },
                 calculateDistance(lat1, lon1, lat2, lon2, units = 'miles') {
                     const R = units === 'km' ? 6371 : 3958.8; // Earth radius in km or miles
