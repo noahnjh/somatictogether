@@ -219,6 +219,7 @@ footer, .directory-container, .content-wrapper {
                 class="checkbox checkbox-sm checkbox-success mr-2"
                 :checked="activeFacets[facetInfo.facetKey] && activeFacets[facetInfo.facetKey][valueInfo.value]"
                 @change="toggleFacet(facetInfo.facetKey, valueInfo.value)"
+                "
               />
               <label
                 :for="facetInfo.facetKey + '-' + valueInfo.value"
@@ -706,6 +707,15 @@ async searchByLocation() {
                 clearKeywordSearch() {
                   this.keywordSearch = '';
                 },
+                openSingleDropdown(facetKey) {
+              // Close all dropdowns first
+              Object.keys(this.visibleFacets).forEach(key => {
+               this.visibleFacets[key] = false;
+              });
+              // Then open only the selected one
+              this.visibleFacets[facetKey] = true;
+                },
+
             },
             computed: {
                 facetCounts() {
