@@ -388,12 +388,12 @@ footer, .directory-container, .content-wrapper {
   </p>
 
   <!-- Booking -->
-  <p v-if="selectedItem.booking" class="mb-2">
-    <strong>Booking:</strong>
+  <p v-if="selectedItem['booking link']" class="mb-2">
+    <strong>Booking Link:</strong>
     <a
-      :href="selectedItem.booking"
+      :href="selectedItem['booking link']"
       target="_blank"
-      class="text-blue-600 hover:underline break-words"
+      class="text-black hover:underline text-[#137338]"
     >
       {{ selectedItem.booking }}
     </a>
@@ -404,7 +404,7 @@ footer, .directory-container, .content-wrapper {
     <strong>Email:</strong>
     <a
       :href="'mailto:' + selectedItem.email"
-      class="text-blue-600 hover:underline"
+      class="text-black hover:underline text-[#137338]"
     >
       {{ selectedItem.email }}
     </a>
