@@ -524,11 +524,15 @@ new Vue({
     showModal(item) {
       this.selectedItem = item;
     },
-    trimDescription(description) {
-      return description.length > this.config.descriptionLength
-        ? description.substr(0, this.config.descriptionLength) + '...'
-        : description;
-    },
+trimDescription(description) {
+  const maxLength = this.config && this.config.descriptionLength
+    ? this.config.descriptionLength
+    : 150; // fallback default
+  if (!description) return '';
+  return description.length > maxLength
+    ? description.substr(0, maxLength) + '...'
+    : description;
+},
     toggleVisibility(facetName) {
       this.visibleFacets[facetName] = !this.visibleFacets[facetName];
     },
