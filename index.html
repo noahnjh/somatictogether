@@ -219,7 +219,7 @@ footer, .directory-container, .content-wrapper {
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
   <div
-    v-for="item in filteredItems"
+    v-for="item in paginatedItems"
     :key="item.id"
     class="max-w-sm rounded overflow-hidden shadow-lg bg-white border border-gray-200 transition duration-300 hover:-translate-y-1 hover:shadow-2xl cursor-pointer will-change-transform"
     @click="showModal(item)"
@@ -256,7 +256,43 @@ footer, .directory-container, .content-wrapper {
     </p>
   </div>
 </div>
-        </div>
+</div>
+    <!-- 🧭 Pagination Controls -->
+<div class="flex justify-center items-center space-x-2 mt-6">
+  <!-- Prev Button -->
+  <button
+    @click="currentPage = Math.max(currentPage - 1, 1)"
+    :disabled="currentPage === 1"
+    class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300"
+  >
+    Prev
+  </button>
+
+  <!-- Page Numbers -->
+  <button
+    v-for="page in totalPages"
+    :key="page"
+    @click="currentPage = page"
+    :class="[
+      'px-3 py-1 rounded',
+      currentPage === page
+        ? 'bg-[#137338] text-white'
+        : 'bg-gray-200 hover:bg-gray-300'
+    ]"
+  >
+    {{ page }}
+  </button>
+
+  <!-- Next Button -->
+  <button
+    @click="currentPage = Math.min(currentPage + 1, totalPages)"
+    :disabled="currentPage === totalPages"
+    class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300"
+  >
+    Next
+  </button>
+</div>
+
             <div v-if="selectedItem" class="fixed inset-0 bg-gray-200 bg-opacity-75 overflow-y-auto h-full w-full"
                 @click.self="selectedItem = null">
                 <div class="relative top-20 mx-auto p-5 border w-3/4 shadow-lg rounded-md bg-white">
@@ -467,6 +503,8 @@ footer, .directory-container, .content-wrapper {
                 searchUnits: 'miles',
                 userCoordinates: null,
                 keywordSearch: '',
+                currentPage: 1,
+                itemsPerPage: 12,
             },
             methods: {
                 getOriginalFacetHeader(facetName) {
@@ -669,9 +707,16 @@ filteredItems() {
       (item.description && item.description.toLowerCase().includes(query))
     );
   }
-
   return filtered;
 },
+  paginatedItems() {
+  const start = (this.currentPage - 1) * this.itemsPerPage;
+  const end = start + this.itemsPerPage;
+  return this.filteredItems.slice(start, end);
+},
+totalPages() {
+  return Math.ceil(this.filteredItems.length / this.itemsPerPage);
+},     
                 activeFiltersText() {
                     const filters = [];
                     Object.keys(this.activeFacets).forEach(facetName => {
@@ -696,6 +741,11 @@ filteredItems() {
     );
   }
             },
+            watch: {
+  filteredItems() {
+    this.currentPage = 1;
+  }
+},
             mounted() {
                 this.isLoading = true;
                 fetch('config.yaml')
