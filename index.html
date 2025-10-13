@@ -502,207 +502,299 @@ footer, .directory-container, .content-wrapper {
 </div>
 
    <script>
-new Vue({
-  el: '#app',
-  data: {
-    items: [],
-    allItems: [],
-    selectedItem: null,
-    visibleFacets: {},
-    activeFacets: {},
-    isLoading: true,
-    config: {},
-    searchLocation: '',
-    searchRadius: 50,
-    searchUnits: 'miles',
-    userCoordinates: null,
-    keywordSearch: '',
-    currentPage: 1,
-    itemsPerPage: 12,
-  },
-  methods: {
-    showModal(item) {
-      this.selectedItem = item;
-    },
-trimDescription(description) {
-  const maxLength = this.config && this.config.descriptionLength
-    ? this.config.descriptionLength
-    : 150; // fallback default
-  if (!description) return '';
-  return description.length > maxLength
-    ? description.substr(0, maxLength) + '...'
-    : description;
-},
-    toggleVisibility(facetName) {
-      this.visibleFacets[facetName] = !this.visibleFacets[facetName];
-    },
-    toggleFacet(facetName, value) {
-      facetName = facetName.toLowerCase();
-      value = value.toLowerCase();
-      if (!this.activeFacets[facetName]) {
-        this.$set(this.activeFacets, facetName, {});
-      }
-      if (this.activeFacets[facetName][value]) {
-        this.$delete(this.activeFacets[facetName], value);
-      } else {
-        this.$set(this.activeFacets[facetName], value, true);
-      }
-      this.applyFilters();
-    },
-    applyFilters() {
-      if (Object.keys(this.activeFacets).length === 0) {
-        this.items = this.allItems;
-        return;
-      }
-      this.items = this.allItems.filter(item => {
-        return Object.keys(this.activeFacets).some(facetName => {
-          if (!item[facetName]) return false;
-          const itemFacetValues = item[facetName]
-            ? item[facetName].split(',').map(value => value.trim().toLowerCase())
-            : [];
-          const activeFacetValues = this.activeFacets[facetName];
-          return itemFacetValues.some(value => activeFacetValues && activeFacetValues[value]);
-        });
-      });
-    },
-    resetFilters() {
-      this.activeFacets = {};
-      this.items = this.allItems;
-    },
-
-    async searchByLocation() {
-      if (!this.searchLocation) {
-        alert('Please enter a city or postal code.');
-        return;
-      }
-
-      try {
-        // Fetch from OpenStreetMap (case-insensitive fuzzy query)
-        const query = this.searchLocation.trim();
-        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
-        const response = await fetch(url, { headers: { 'User-Agent': 'HSP-Directory/1.0' } });
-        const data = await response.json();
-
-        if (!data || data.length === 0) {
-          alert('Location not found. Try a different city or postal code.');
-          return;
-        }
-
-        const { lat, lon } = data[0];
-        this.userCoordinates = { lat: parseFloat(lat), lon: parseFloat(lon) };
-
-        // Filter by distance
-        this.items = this.allItems.filter(item => {
-          if (!item.latitude || !item.longitude) return false;
-          const distance = this.calculateDistance(
-            this.userCoordinates.lat,
-            this.userCoordinates.lon,
-            parseFloat(item.latitude),
-            parseFloat(item.longitude),
-            this.searchUnits
-          );
-          return distance <= parseFloat(this.searchRadius);
-        });
-
-        if (this.items.length === 0) {
-          alert('No practitioners found within your selected radius.');
-        }
-      } catch (err) {
-        console.error('Error fetching location:', err);
-        alert('Error finding that location. Please try again later.');
-      }
-    },
-
-    clearLocationSearch() {
-      this.searchLocation = '';
-      this.searchRadius = 50;
-      this.searchUnits = 'miles';
-      this.userCoordinates = null;
-      // Reset displayed cards to show all items again
-      this.items = this.allItems;
-    },
-
-    calculateDistance(lat1, lon1, lat2, lon2, units = 'miles') {
-      const R = units === 'km' ? 6371 : 3958.8;
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * Math.PI / 180) *
-          Math.cos(lat2 * Math.PI / 180) *
-          Math.sin(dLon / 2) *
-          Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      return R * c;
-    },
-
-    clearKeywordSearch() {
-      this.keywordSearch = '';
-    },
-  },
-  computed: {
-    filteredItems() {
-      let filtered = this.items;
-      if (this.keywordSearch.trim() !== '') {
-        const query = this.keywordSearch.toLowerCase();
-        filtered = filtered.filter(item =>
-          (item.name && item.name.toLowerCase().includes(query)) ||
-          (item.title && item.title.toLowerCase().includes(query)) ||
-          (item.description && item.description.toLowerCase().includes(query))
-        );
-      }
-      return filtered;
-    },
-    paginatedItems() {
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      return this.filteredItems.slice(start, end);
-    },
-    totalPages() {
-      return Math.ceil(this.filteredItems.length / this.itemsPerPage);
-    }
-  },
-  watch: {
-    filteredItems() {
-      this.currentPage = 1;
-    }
-  },
-  mounted() {
-    this.isLoading = true;
-    fetch('config.yaml')
-      .then(response => response.text())
-      .then(yaml => {
-        this.config = jsyaml.load(yaml);
-        fetch(this.config.dataSourceUrl.trim())
-          .then(response => response.text())
-          .then(csvData => {
-            Papa.parse(csvData, {
-              header: true,
-              skipEmptyLines: true,
-              complete: results => {
-                this.allItems = results.data.map(item => {
-                  const newItem = {};
-                  Object.keys(item).forEach(key => {
-                    newItem[key.toLowerCase()] = item[key];
-                  });
-                  return newItem;
-                });
-                this.items = this.allItems;
-                this.isLoading = false;
-              }
-            });
-          });
-      });
-
-    // 🔹 Allow pressing Enter to trigger search
-    window.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && this.searchLocation.trim() !== '') {
-        this.searchByLocation();
-      }
-    });
+        new Vue({
+            el: '#app',
+            data: {
+                items: [],
+                allItems: [], // Store all items to reset filters
+                selectedItem: null,
+                visibleFacets: {}, // Object to control the visibility of each facet
+                activeFacets: {},
+                isLoading: true,
+                config: {},
+                searchLocation: '',
+                searchRadius: 50,
+                searchUnits: 'miles',
+                userCoordinates: null,
+                keywordSearch: '',
+                currentPage: 1,
+                itemsPerPage: 12,
+            },
+            methods: {
+                getOriginalFacetHeader(facetName) {
+                  const match = this.config.activeFacets.find(f => f.toLowerCase() === facetName.toLowerCase());
+                  return match || facetName;
+                    },               
+                getOriginalFacetValue(facetName, value) {
+                  // Find the original-cased version of the value from allItems
+                  for (const item of this.allItems) {
+                const values = item[facetName]?.split(',').map(v => v.trim());
+                if (values && values.some(v => v.toLowerCase() === value.toLowerCase())) {
+                  return values.find(v => v.toLowerCase() === value.toLowerCase()) || value;
+                    }
+                      }
+                  return value; // fallback
+                    },
+              
+                showModal(item) {
+                    this.selectedItem = item;
+                },
+                trimDescription(description) {
+                    return description.length > this.config.descriptionLength ? description.substr(0, this.config.descriptionLength) + '...' : description;
+                },
+                toggleVisibility(facetName) {
+                    if (!this.visibleFacets[facetName]) {
+                        this.$set(this.visibleFacets, facetName, true);
+                    } else {
+                        this.visibleFacets[facetName] = !this.visibleFacets[facetName];
+                    }
+                },
+                toggleFacet(facetName, value) {
+                    facetName = facetName.toLowerCase();
+                    value = value.toLowerCase();
+                    if (!this.activeFacets[facetName]) {
+                        this.$set(this.activeFacets, facetName, {});
+                    }
+                    if (this.activeFacets[facetName][value]) {
+                        this.$delete(this.activeFacets[facetName], value);
+                    } else {
+                        this.$set(this.activeFacets[facetName], value, true);
+                    }
+                    this.applyFilters();
+                },
+                parseFacets(facetsString, tagsString) {
+                    let facets = facetsString;
+                    if (!facets || facets.trim() === '') {
+                        facets = tagsString;
+                    }
+                    return facets ? facets.split(',').map(facet => facet.trim().toLowerCase()).filter(facet => facet !== "") : [];
+                },
+                getUrlParams() {
+                    const params = new URLSearchParams(window.location.search);
+                    params.forEach((value, key) => {
+                        this.setActiveFacetsFromUrl(key.toLowerCase(), value.toLowerCase());
+                    });
+                    this.applyFilters();
+                },
+                setActiveFacetsFromUrl(facetName, values) {
+                    facetName = facetName.toLowerCase();
+                    if (!this.activeFacets[facetName]) {
+                        this.$set(this.activeFacets, facetName, {});
+                    }
+                    values.split(',').forEach(value => {
+                        this.$set(this.activeFacets[facetName], value.trim().toLowerCase(), true);
+                    });
+                    console.log("Active Facets after URL params: ", this.activeFacets); // Debugging log
+                },
+                applyFilters() {
+                    if (Object.keys(this.activeFacets).length === 0) {
+                        this.items = this.allItems;
+                        return;
+                    }
+                    this.items = this.allItems.filter(item => {
+                        return Object.keys(this.activeFacets).some(facetName => {
+                            if (!item[facetName]) return false;
+                            const itemFacetValues = item[facetName] ? item[facetName].split(',').map(value => value.trim().toLowerCase()) : [];
+                            const activeFacetValues = this.activeFacets[facetName];
+                            return itemFacetValues.some(value => activeFacetValues && activeFacetValues[value]);
+                        });
+                    });
+                },
+                resetFilters() {
+                    this.activeFacets = {};
+                    this.items = this.allItems;
+                },
+async searchByLocation() {
+  if (!this.searchLocation) {
+    alert('Please enter a city or postal code.');
+    return;
   }
+
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(this.searchLocation)}`;
+    const response = await fetch(url, { headers: { 'User-Agent': 'HSP-Directory/1.0' } });
+    const data = await response.json();
+
+    if (!data || data.length === 0) {
+      alert('Location not found. Try a different city or postal code.');
+      return;
+    }
+
+    const { lat, lon } = data[0];
+    this.userCoordinates = { lat: parseFloat(lat), lon: parseFloat(lon) };
+
+    // Now filter the directory items by radius
+    this.items = this.allItems.filter(item => {
+      if (!item.latitude || !item.longitude) return false;
+      const distance = this.calculateDistance(
+        this.userCoordinates.lat,
+        this.userCoordinates.lon,
+        parseFloat(item.latitude),
+        parseFloat(item.longitude),
+        this.searchUnits
+      );
+      return distance <= parseFloat(this.searchRadius);
+    });
+
+    if (this.items.length === 0) {
+      alert('No practitioners found within your selected radius.');
+    }
+
+  } catch (err) {
+    console.error('Error fetching location:', err);
+    alert('Error finding that location. Please try again later.');
+  }
+},
+
+                clearLocationSearch() {
+                     this.searchLocation = '';
+                      this.searchRadius = 50;
+                      this.searchUnits = 'miles';
+                      this.userCoordinates = null;
+                },
+                calculateDistance(lat1, lon1, lat2, lon2, units = 'miles') {
+                    const R = units === 'km' ? 6371 : 3958.8; // Earth radius in km or miles
+                    const dLat = (lat2 - lat1) * Math.PI / 180;
+                    const dLon = (lon2 - lon1) * Math.PI / 180;
+                      const a =
+                        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(lat1 * Math.PI / 180) *
+                        Math.cos(lat2 * Math.PI / 180) *
+                        Math.sin(dLon / 2) *
+                        Math.sin(dLon / 2);
+                      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                      return R * c; // Distance
+                },
+                clearKeywordSearch() {
+                  this.keywordSearch = '';
+                },
+            },
+            computed: {
+                facetCounts() {
+                    const facetValues = {};
+                    this.allItems.forEach(item => {
+                        this.config.activeFacets.forEach(facetName => {
+                            const LowerCaseFacetName = facetName.toLowerCase();
+                            if (item[LowerCaseFacetName]) {
+                                const values = item[LowerCaseFacetName].split(',').map(value => value.trim().toLowerCase()).filter(value => value !== "");
+                                values.forEach(value => {
+                                    if (!facetValues[LowerCaseFacetName]) {
+                                        facetValues[LowerCaseFacetName] = {};
+                                    }
+                                    if (!facetValues[LowerCaseFacetName][value]) {
+                                        facetValues[LowerCaseFacetName][value] = 0;
+                                    }
+                                    facetValues[LowerCaseFacetName][value]++;
+                                });
+                            }
+                        });
+                    });
+
+                    const result = [];
+                    Object.keys(facetValues).forEach(facetName => {
+                        const facets = Object.keys(facetValues[facetName]).map(value => ({
+                            value: value,
+                            count: facetValues[facetName][value]
+                        }));
+                        facets.sort((a, b) => b.count - a.count);
+// Find the original-cased version of the facet name from config.yaml
+const originalFacetName =
+  this.config.activeFacets.find(f => f.toLowerCase() === facetName.toLowerCase()) || facetName;
+
+result.push({
+  facet: originalFacetName, // display name (original case)
+  facetKey: facetName.toLowerCase(), // for internal lookups
+  values: facets
 });
-</script>
+                    });
+                    return result;
+                },
+filteredItems() {
+  let filtered = this.items;
+
+  // 🔍 Keyword search filter
+  if (this.keywordSearch.trim() !== '') {
+    const query = this.keywordSearch.toLowerCase();
+    filtered = filtered.filter(item =>
+      (item.name && item.name.toLowerCase().includes(query)) ||
+      (item.title && item.title.toLowerCase().includes(query)) ||
+      (item.description && item.description.toLowerCase().includes(query))
+    );
+  }
+  return filtered;
+},
+  paginatedItems() {
+  const start = (this.currentPage - 1) * this.itemsPerPage;
+  const end = start + this.itemsPerPage;
+  return this.filteredItems.slice(start, end);
+},
+totalPages() {
+  return Math.ceil(this.filteredItems.length / this.itemsPerPage);
+},     
+                activeFiltersText() {
+                    const filters = [];
+                    Object.keys(this.activeFacets).forEach(facetName => {
+                        const activeValues = Object.keys(this.activeFacets[facetName]).filter(value => this.activeFacets[facetName][value]);
+                        if (activeValues.length > 0) {
+                            filters.push(`${facetName}: ${activeValues.join(', ')}`);
+                        }
+                    });
+                    return filters.length > 0 ? `Filters: ${filters.join(' | ')}` : 'No active filters';
+                },
+                 hasAnySocialLinks() {
+    if (!this.selectedItem) return false;
+    const socialKeys = [
+      'x (twitter) profile link',
+      'instagram profile link',
+      'tiktok profile link',
+      'facebook profile link',
+      'linkedin profile link'
+    ];
+    return socialKeys.some(
+      key => this.selectedItem[key] && this.selectedItem[key].trim() !== ''
+    );
+  }
+            },
+            watch: {
+  filteredItems() {
+    this.currentPage = 1;
+  }
+},
+            mounted() {
+                this.isLoading = true;
+                fetch('config.yaml')
+                    .then(response => response.text())
+                    .then(yaml => {
+                        this.config = jsyaml.load(yaml);
+                        fetch(this.config.dataSourceUrl.trim())
+                            .then(response => response.text())
+                            .then(csvData => {
+                                 Papa.parse(csvData, {
+                                    header: true,
+                                    skipEmptyLines: true,
+                                    complete: (results) => {
+  this.allItems = results.data.map(item => {
+    const newItem = {};
+    Object.keys(item).forEach(key => {
+      newItem[key.toLowerCase()] = item[key];
+    });
+    return newItem;
+  });
+  this.items = this.allItems;
+  console.log("Items loaded: ", this.items); // Debugging log
+  console.log("Example Instagram link: ", this.items[0]['instagram profile link']);
+  console.log("Raw CSV keys from first item:", Object.keys(results.data[0]));
+  console.log("Raw CSV first item:", results.data[0]);
+  this.getUrlParams(); // Apply filters from URL after loading data
+  this.isLoading = false;
+}
+
+                                });
+                            });
+                    });
+            }
+        });
+    </script>
 
 </body>
 
