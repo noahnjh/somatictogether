@@ -707,14 +707,6 @@ async searchByLocation() {
                 clearKeywordSearch() {
                   this.keywordSearch = '';
                 },
-                openSingleDropdown(facetKey) {
-              // Close all dropdowns first
-              Object.keys(this.visibleFacets).forEach(key => {
-               this.visibleFacets[key] = false;
-              });
-              // Then open only the selected one
-              this.visibleFacets[facetKey] = true;
-                },
 
             },
             computed: {
