@@ -293,200 +293,209 @@ footer, .directory-container, .content-wrapper {
   </button>
 </div>
 
-            <div v-if="selectedItem" class="fixed inset-0 bg-gray-200 bg-opacity-75 overflow-y-auto h-full w-full"
-                @click.self="selectedItem = null">
-                <div class="relative top-20 mx-auto p-5 border w-3/4 shadow-lg rounded-md bg-white">
-<div class="modal-card text-left">
-  <!-- Image -->
-  <img
-    :src="selectedItem.image || 'default-thumbnail.jpg'"
-    alt="Thumbnail"
-    class="w-full max-h-96 object-contain rounded mb-4"
-  />
-
-  <!-- Name + Pronouns -->
-  <h2 class="text-2xl font-bold mb-1 text-black">
-    {{ selectedItem.name }}
-    <span v-if="selectedItem.pronouns && selectedItem.pronouns.trim() !== ''">
-      ({{ selectedItem.pronouns }})
-    </span>
-  </h2>
-
-  <!-- Title -->
-  <h4 class="text-lg text-gray-600 mb-3">
-    {{ selectedItem.title }}
-  </h4>
-
-  <!-- Location -->
-  <p class="text-sm text-gray-700 mb-3 flex items-center">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5s-3 1.343-3 3 1.343 3 3 3z" />
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M12 22s8-7.333 8-13a8 8 0 10-16 0c0 5.667 8 13 8 13z" />
-    </svg>
-    {{ [selectedItem.city, selectedItem.state || selectedItem['state or province'], selectedItem.country].filter(Boolean).join(', ') }}
-  </p>
-
-  <!-- Full Description -->
-  <p class="text-gray-800 mb-4 whitespace-pre-line">
-    {{ selectedItem.description }}
-  </p>
-
-  <!-- Tags for Session Format -->
-  <div v-if="selectedItem['session format']" class="mb-3">
-    <strong>Session Format:</strong>
-    <div class="flex flex-wrap mt-1">
-      <span
-        v-for="format in selectedItem['session format'].split(',').map(f => f.trim()).filter(Boolean)"
-        :key="format"
-        class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm mr-2 mb-2"
-      >
-        {{ format }}
-      </span>
-    </div>
-  </div>
-
-  <!-- Tags for Area of Support -->
-  <div v-if="selectedItem['area of support']" class="mb-3">
-    <strong>Area of Support:</strong>
-    <div class="flex flex-wrap mt-1">
-      <span
-        v-for="area in selectedItem['area of support'].split(',').map(a => a.trim()).filter(Boolean)"
-        :key="area"
-        class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm mr-2 mb-2"
-      >
-        {{ area }}
-      </span>
-    </div>
-  </div>
-
-  <!-- Tags for Modality of Care -->
-  <div v-if="selectedItem['modality of care']" class="mb-3">
-    <strong>Modality of Care:</strong>
-    <div class="flex flex-wrap mt-1">
-      <span
-        v-for="modality in selectedItem['modality of care'].split(',').map(m => m.trim()).filter(Boolean)"
-        :key="modality"
-        class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm mr-2 mb-2"
-      >
-        {{ modality }}
-      </span>
-    </div>
-  </div>
-
-  <!-- Website -->
-  <p v-if="selectedItem.website" class="mb-2">
-    <strong>Website:</strong>
-    <a
-      :href="selectedItem.website"
-      target="_blank"
-      class="text-blue-600 hover:underline break-words"
-    >
-      {{ selectedItem.website }}
-    </a>
-  </p>
-
-  <!-- Booking -->
-  <p v-if="selectedItem['booking link']" class="mb-2">
-    <strong>Booking Link:</strong>
-    <a
-      :href="selectedItem['booking link']"
-      target="_blank"
-      class="text-black hover:underline text-[#137338]"
-    >
-      {{ selectedItem.booking }}
-    </a>
-  </p>
-
-  <!-- Contact Email -->
-  <p v-if="selectedItem.email" class="mb-2">
-    <strong>Email:</strong>
-    <a
-      :href="'mailto:' + selectedItem.email"
-      class="text-black hover:underline text-[#137338]"
-    >
-      {{ selectedItem.email }}
-    </a>
-  </p>
-
-  <!-- Contact Phone -->
-  <p v-if="selectedItem.phone" class="mb-2">
-    <strong>Phone:</strong> {{ selectedItem.phone }}
-  </p>
-
-<!-- Social Media Links -->
 <div
-  v-if="hasAnySocialLinks"
-  class="mt-4"
+  v-if="selectedItem"
+  class="fixed inset-0 z-50 bg-white overflow-y-auto"
 >
-  <strong>Connect:</strong>
-  <div class="flex space-x-4 mt-2 text-gray-700 social-icons">
-    <!-- X (Twitter) -->
-    <a
-      v-if="selectedItem['x (twitter) profile link'] && selectedItem['x (twitter) profile link'].trim() !== ''"
-      :href="selectedItem['x (twitter) profile link']"
-      target="_blank"
-      class="hover:text-[#137338]"
-      aria-label="X (Twitter)"
+  <!-- Back header -->
+  <div class="sticky top-0 bg-white border-b border-gray-300 flex items-center p-4">
+    <button
+      @click="selectedItem = null"
+      class="text-gray-700 hover:text-[#137338] flex items-center space-x-2"
     >
-      <i class="fa-brands fa-x-twitter fa-lg"></i>
-    </a>
+      <i class="fas fa-arrow-left"></i>
+      <span class="font-semibold">Back</span>
+    </button>
+  </div>
 
-    <!-- Instagram -->
-    <a
-      v-if="selectedItem['instagram profile link'] && selectedItem['instagram profile link'].trim() !== ''"
-      :href="selectedItem['instagram profile link']"
-      target="_blank"
-      class="hover:text-[#137338]"
-      aria-label="Instagram"
-    >
-      <i class="fab fa-instagram fa-lg"></i>
-    </a>
+  <!-- Main content -->
+  <div class="p-6 max-w-6xl mx-auto">
+    <!-- Top section: image left, details right -->
+    <div class="flex flex-col md:flex-row md:space-x-8">
+      <!-- Image -->
+      <div class="md:w-1/2 w-full mb-6 md:mb-0">
+        <img
+          :src="selectedItem.image || 'default-thumbnail.jpg'"
+          alt="Thumbnail"
+          class="w-full h-auto max-h-[600px] object-contain rounded-lg border border-gray-200"
+        />
+      </div>
 
-    <!-- TikTok -->
-    <a
-      v-if="selectedItem['tiktok profile link'] && selectedItem['tiktok profile link'].trim() !== ''"
-      :href="selectedItem['tiktok profile link']"
-      target="_blank"
-      class="hover:text-[#137338]"
-      aria-label="TikTok"
-    >
-      <i class="fab fa-tiktok fa-lg"></i>
-    </a>
+      <!-- Main details -->
+      <div class="md:w-1/2 w-full text-left">
+        <h2 class="text-3xl font-bold mb-2 text-black">
+          {{ selectedItem.name }}
+          <span
+            v-if="selectedItem.pronouns && selectedItem.pronouns.trim() !== ''"
+            class="text-gray-600 text-lg font-medium"
+          >
+            ({{ selectedItem.pronouns }})
+          </span>
+        </h2>
+        <h4 class="text-lg text-gray-700 mb-2">{{ selectedItem.title }}</h4>
+        <p class="text-sm text-gray-700 mb-4 flex items-center">
+          <i class="fas fa-map-marker-alt text-gray-600 mr-2"></i>
+          {{ [selectedItem.city, selectedItem.state || selectedItem['state or province'], selectedItem.country].filter(Boolean).join(', ') }}
+        </p>
+        <p class="text-gray-800 whitespace-pre-line mb-4">
+          {{ selectedItem.description }}
+        </p>
+      </div>
+    </div>
 
-    <!-- Facebook -->
-    <a
-      v-if="selectedItem['facebook profile link'] && selectedItem['facebook profile link'].trim() !== ''"
-      :href="selectedItem['facebook profile link']"
-      target="_blank"
-      class="hover:text-[#137338]"
-      aria-label="Facebook"
-    >
-      <i class="fab fa-facebook fa-lg"></i>
-    </a>
+    <!-- Full-width sections -->
+    <div class="mt-8 space-y-6 text-left">
+      <!-- Session Format -->
+      <div v-if="selectedItem['session format']">
+        <strong class="block mb-1">Session Format:</strong>
+        <div class="flex flex-wrap">
+          <span
+            v-for="format in selectedItem['session format'].split(',').map(f => f.trim()).filter(Boolean)"
+            :key="format"
+            class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm mr-2 mb-2"
+          >
+            {{ format }}
+          </span>
+        </div>
+      </div>
 
-    <!-- LinkedIn -->
-    <a
-      v-if="selectedItem['linkedin profile link'] && selectedItem['linkedin profile link'].trim() !== ''"
-      :href="selectedItem['linkedin profile link']"
-      target="_blank"
-      class="hover:text-[#137338]"
-      aria-label="LinkedIn"
-    >
-      <i class="fab fa-linkedin fa-lg"></i>
-    </a>
+      <!-- Area of Support -->
+      <div v-if="selectedItem['area of support']">
+        <strong class="block mb-1">Area of Support:</strong>
+        <div class="flex flex-wrap">
+          <span
+            v-for="area in selectedItem['area of support'].split(',').map(a => a.trim()).filter(Boolean)"
+            :key="area"
+            class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm mr-2 mb-2"
+          >
+            {{ area }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Modality of Care -->
+      <div v-if="selectedItem['modality of care']">
+        <strong class="block mb-1">Modality of Care:</strong>
+        <div class="flex flex-wrap">
+          <span
+            v-for="modality in selectedItem['modality of care'].split(',').map(m => m.trim()).filter(Boolean)"
+            :key="modality"
+            class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm mr-2 mb-2"
+          >
+            {{ modality }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Sexuality -->
+      <div v-if="selectedItem.sexuality && selectedItem.sexuality.trim() !== ''">
+        <strong class="block mb-1">Sexuality:</strong>
+        <div class="flex flex-wrap">
+          <span
+            v-for="sexuality in selectedItem.sexuality.split(',').map(s => s.trim()).filter(Boolean)"
+            :key="sexuality"
+            class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm mr-2 mb-2"
+          >
+            {{ sexuality }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Website -->
+      <div v-if="selectedItem.website">
+        <strong>Website:</strong>
+        <a
+          :href="selectedItem.website"
+          target="_blank"
+          class="text-black hover:text-[#137338] hover:underline ml-2 break-words"
+        >
+          {{ selectedItem.website }}
+        </a>
+      </div>
+
+      <!-- Booking (now using CSV header "Booking Link") -->
+      <div v-if="selectedItem['booking link']">
+        <strong>Booking:</strong>
+        <a
+          :href="selectedItem['booking link']"
+          target="_blank"
+          class="text-black hover:text-[#137338] hover:underline ml-2 break-words"
+        >
+          {{ selectedItem['booking link'] }}
+        </a>
+      </div>
+
+      <!-- Contact -->
+      <div v-if="selectedItem.email || selectedItem.phone">
+        <strong class="block mb-1">Contact:</strong>
+        <p v-if="selectedItem.email" class="mb-1">
+          <a
+            :href="'mailto:' + selectedItem.email"
+            class="text-black hover:text-[#137338] hover:underline"
+          >
+            {{ selectedItem.email }}
+          </a>
+        </p>
+        <p v-if="selectedItem.phone" class="text-black">
+          {{ selectedItem.phone }}
+        </p>
+      </div>
+
+      <!-- Social Links -->
+      <div v-if="hasAnySocialLinks">
+        <strong class="block mb-1">Connect:</strong>
+        <div class="flex space-x-4 mt-2 text-gray-700">
+          <a
+            v-if="selectedItem['x (twitter) profile link']"
+            :href="selectedItem['x (twitter) profile link']"
+            target="_blank"
+            class="text-black hover:text-[#137338] hover:underline"
+            aria-label="X (Twitter)"
+          >
+            <i class="fa-brands fa-x-twitter fa-lg"></i>
+          </a>
+          <a
+            v-if="selectedItem['instagram profile link']"
+            :href="selectedItem['instagram profile link']"
+            target="_blank"
+            class="text-black hover:text-[#137338] hover:underline"
+            aria-label="Instagram"
+          >
+            <i class="fab fa-instagram fa-lg"></i>
+          </a>
+          <a
+            v-if="selectedItem['tiktok profile link']"
+            :href="selectedItem['tiktok profile link']"
+            target="_blank"
+            class="text-black hover:text-[#137338] hover:underline"
+            aria-label="TikTok"
+          >
+            <i class="fab fa-tiktok fa-lg"></i>
+          </a>
+          <a
+            v-if="selectedItem['facebook profile link']"
+            :href="selectedItem['facebook profile link']"
+            target="_blank"
+            class="text-black hover:text-[#137338] hover:underline"
+            aria-label="Facebook"
+          >
+            <i class="fab fa-facebook fa-lg"></i>
+          </a>
+          <a
+            v-if="selectedItem['linkedin profile link']"
+            :href="selectedItem['linkedin profile link']"
+            target="_blank"
+            class="text-black hover:text-[#137338] hover:underline"
+            aria-label="LinkedIn"
+          >
+            <i class="fab fa-linkedin fa-lg"></i>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-
-                        <div class="mt-6 text-center">
-                            <button class="bg-[#137338] text-white px-4 py-2 rounded hover:bg-green-700 transition"
-                                @click="selectedItem = null">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <script>
         new Vue({
             el: '#app',
