@@ -193,7 +193,7 @@ footer, .directory-container, .content-wrapper {
         <div v-for="facetInfo in facetCounts" :key="facetInfo.facetKey" class="relative mr-2 mb-2">
           <!-- Dropdown trigger -->
           <button
-            @click="toggleVisibility(facetInfo.facetKey)"
+            @click="openSingleDropdown(facetInfo.facetKey)"
             class="btn btn-sm bg-white border border-gray-300 text-black hover:bg-gray-100 flex items-center drop-shadow"
           >
             <i class="fas fa-filter mr-1"></i>
@@ -219,7 +219,6 @@ footer, .directory-container, .content-wrapper {
                 class="checkbox checkbox-sm checkbox-success mr-2"
                 :checked="activeFacets[facetInfo.facetKey] && activeFacets[facetInfo.facetKey][valueInfo.value]"
                 @change="toggleFacet(facetInfo.facetKey, valueInfo.value)"
-                "
               />
               <label
                 :for="facetInfo.facetKey + '-' + valueInfo.value"
@@ -253,6 +252,7 @@ footer, .directory-container, .content-wrapper {
     </div>
   </div>
 </div>
+
 
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
