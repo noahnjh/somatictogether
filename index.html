@@ -401,31 +401,33 @@ footer, .directory-container, .content-wrapper {
         </div>
       </div>
 
-      <!-- Website -->
-      <div v-if="selectedItem.website">
-        <strong>Website:</strong>
-        <a
-          :href="selectedItem.website"
-          target="_blank"
-          class="text-black hover:text-[#137338] hover:underline ml-2 break-words"
-        >
-          {{ selectedItem.website }}
-        </a>
-      </div>
+<!-- Website -->
+<div v-if="selectedItem.website">
+  <strong>Website:</strong>
+  <a
+    :href="selectedItem.website"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="text-black hover:text-[#137338] hover:underline ml-2"
+  >
+    {{ selectedItem.website }}
+  </a>
+</div>
 
-      <!-- Booking (now using CSV header "Booking Link") -->
-      <div v-if="selectedItem['booking link']">
-        <strong>Booking:</strong>
-        <a
-          :href="selectedItem['booking link']"
-          target="_blank"
-          class="text-black hover:text-[#137338] hover:underline ml-2 break-words"
-        >
-          {{ selectedItem['booking link'] }}
-        </a>
-      </div>
+<!-- Booking -->
+<div v-if="selectedItem['booking link']">
+  <strong>Booking Link:</strong>
+  <a
+    :href="selectedItem['booking link']"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="text-black hover:text-[#137338] hover:underline ml-2"
+  >
+    {{ selectedItem['booking link'] }}
+  </a>
+</div>
 
-    <!-- Contact -->
+<!-- Contact -->
 <div v-if="selectedItem.email || selectedItem.phone">
   <strong>Contact:</strong>
   <span v-if="selectedItem.email">
@@ -436,66 +438,64 @@ footer, .directory-container, .content-wrapper {
       {{ selectedItem.email }}
     </a>
   </span>
-  <p v-if="selectedItem.phone" class="text-black ml-6 mt-1">
+  <span v-if="selectedItem.phone" class="ml-4">
     <a
       :href="'tel:' + selectedItem.phone"
       class="text-black hover:text-[#137338] hover:underline"
     >
       {{ selectedItem.phone }}
     </a>
-  </p>
+  </span>
 </div>
 
-      <!-- Social Links -->
-      <div v-if="hasAnySocialLinks">
-        <strong class="block mb-1">Connect:</strong>
-        <div class="flex space-x-4 mt-2 text-gray-700">
-          <a
-            v-if="selectedItem['x (twitter) profile link']"
-            :href="selectedItem['x (twitter) profile link']"
-            target="_blank"
-            class="text-black hover:text-[#137338] hover:underline"
-            aria-label="X (Twitter)"
-          >
-            <i class="fa-brands fa-x-twitter fa-lg"></i>
-          </a>
-          <a
-            v-if="selectedItem['instagram profile link']"
-            :href="selectedItem['instagram profile link']"
-            target="_blank"
-            class="text-black hover:text-[#137338] hover:underline"
-            aria-label="Instagram"
-          >
-            <i class="fab fa-instagram fa-lg"></i>
-          </a>
-          <a
-            v-if="selectedItem['tiktok profile link']"
-            :href="selectedItem['tiktok profile link']"
-            target="_blank"
-            class="text-black hover:text-[#137338] hover:underline"
-            aria-label="TikTok"
-          >
-            <i class="fab fa-tiktok fa-lg"></i>
-          </a>
-          <a
-            v-if="selectedItem['facebook profile link']"
-            :href="selectedItem['facebook profile link']"
-            target="_blank"
-            class="text-black hover:text-[#137338] hover:underline"
-            aria-label="Facebook"
-          >
-            <i class="fab fa-facebook fa-lg"></i>
-          </a>
-          <a
-            v-if="selectedItem['linkedin profile link']"
-            :href="selectedItem['linkedin profile link']"
-            target="_blank"
-            class="text-black hover:text-[#137338] hover:underline"
-            aria-label="LinkedIn"
-          >
-            <i class="fab fa-linkedin fa-lg"></i>
-          </a>
-        </div>
+<!-- Social Links -->
+<div class="flex flex-wrap items-center gap-3 mt-4">
+  <a
+    v-if="selectedItem['x (twitter) profile link']"
+    :href="selectedItem['x (twitter) profile link']"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="text-black hover:text-[#137338]"
+  >
+    <i class="fab fa-x-twitter fa-lg"></i>
+  </a>
+  <a
+    v-if="selectedItem['instagram profile link']"
+    :href="selectedItem['instagram profile link']"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="text-black hover:text-[#137338]"
+  >
+    <i class="fab fa-instagram fa-lg"></i>
+  </a>
+  <a
+    v-if="selectedItem['tiktok profile link']"
+    :href="selectedItem['tiktok profile link']"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="text-black hover:text-[#137338]"
+  >
+    <i class="fab fa-tiktok fa-lg"></i>
+  </a>
+  <a
+    v-if="selectedItem['facebook profile link']"
+    :href="selectedItem['facebook profile link']"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="text-black hover:text-[#137338]"
+  >
+    <i class="fab fa-facebook fa-lg"></i>
+  </a>
+  <a
+    v-if="selectedItem['linkedin profile link']"
+    :href="selectedItem['linkedin profile link']"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="text-black hover:text-[#137338]"
+  >
+    <i class="fab fa-linkedin fa-lg"></i>
+  </a>
+</div>
       </div>
     </div>
   </div>
