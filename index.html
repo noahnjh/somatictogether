@@ -425,21 +425,26 @@ footer, .directory-container, .content-wrapper {
         </a>
       </div>
 
-      <!-- Contact -->
-      <div v-if="selectedItem.email || selectedItem.phone">
-        <strong class="block mb-1">Contact:</strong>
-        <p v-if="selectedItem.email" class="mb-1">
-          <a
-            :href="'mailto:' + selectedItem.email"
-            class="text-black hover:text-[#137338] hover:underline"
-          >
-            {{ selectedItem.email }}
-          </a>
-        </p>
-        <p v-if="selectedItem.phone" class="text-black">
-          {{ selectedItem.phone }}
-        </p>
-      </div>
+    <!-- Contact -->
+<div v-if="selectedItem.email || selectedItem.phone">
+  <strong>Contact:</strong>
+  <span v-if="selectedItem.email">
+    <a
+      :href="'mailto:' + selectedItem.email"
+      class="text-black hover:text-[#137338] hover:underline ml-2"
+    >
+      {{ selectedItem.email }}
+    </a>
+  </span>
+  <p v-if="selectedItem.phone" class="text-black ml-6 mt-1">
+    <a
+      :href="'tel:' + selectedItem.phone"
+      class="text-black hover:text-[#137338] hover:underline"
+    >
+      {{ selectedItem.phone }}
+    </a>
+  </p>
+</div>
 
       <!-- Social Links -->
       <div v-if="hasAnySocialLinks">
