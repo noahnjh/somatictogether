@@ -110,6 +110,25 @@ button.btn:hover {
 .bg-blue-500:hover {
   background-color: #0f5e2d !important; /* darker hover tone */
 }
+        /* --- Force entire page and empty space below to be white --- */
+html, body {
+  background-color: #ffffff !important;
+}
+
+/* Main app container */
+#app {
+  background-color: #ffffff !important;
+}
+
+/* Remove gray background behind modal overlay when it's closed */
+.fixed.inset-0 {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Optional: remove any residual footer or outer wrapper color */
+footer, .directory-container, .content-wrapper {
+  background-color: #ffffff !important;
+}
     </style>
 </head>
 
