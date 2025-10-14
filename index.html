@@ -590,19 +590,33 @@ toggleVisibility(facetName) {
   this.$set(this.visibleFacets, facetName, !this.visibleFacets[facetName]);
 },
 
-                toggleFacet(facetName, value) {
-                    facetName = facetName.toLowerCase();
-                    value = value.toLowerCase();
-                    if (!this.activeFacets[facetName]) {
-                        this.$set(this.activeFacets, facetName, {});
-                    }
-                    if (this.activeFacets[facetName][value]) {
-                        this.$delete(this.activeFacets[facetName], value);
-                    } else {
-                        this.$set(this.activeFacets[facetName], value, true);
-                    }
-                    this.applyFilters();
-                },
+toggleFacet(facetName, value) {
+  facetName = facetName.toLowerCase();
+  value = value.toLowerCase();
+
+  // Create facet group if missing
+  if (!this.activeFacets[facetName]) {
+    this.$set(this.activeFacets, facetName, {});
+  }
+
+  // Toggle facet on/off
+  if (this.activeFacets[facetName][value]) {
+    this.$delete(this.activeFacets[facetName], value);
+  } else {
+    this.$set(this.activeFacets[facetName], value, true);
+  }
+
+  // Apply filters after change
+  this.applyFilters();
+
+  // 🧹 Auto-reset if no filters remain active
+  const hasAnyActive = Object.keys(this.activeFacets).some(facet =>
+    Object.keys(this.activeFacets[facet]).some(val => this.activeFacets[facet][val])
+  );
+  if (!hasAnyActive) {
+    this.resetFilters();
+  }
+},
                 parseFacets(facetsString, tagsString) {
                     let facets = facetsString;
                     if (!facets || facets.trim() === '') {
