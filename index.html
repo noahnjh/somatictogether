@@ -191,17 +191,16 @@ footer, .directory-container, .content-wrapper {
 
         <!-- Loop through each facet -->
         <div v-for="facetInfo in facetCounts" :key="facetInfo.facetKey" class="relative mr-2 mb-2">
-          <!-- Dropdown trigger -->
-          <button
-            @click="toggleVisibility(facetInfo.facetKey)"
-            class="btn btn-sm bg-white border border-gray-300 text-black hover:bg-gray-100 flex items-center drop-shadow"
-          >
-            <i class="fas fa-filter mr-1"></i>
-            {{ facetInfo.facet }}
-            <i
-              :class="visibleFacets[facetInfo.facetKey] ? 'fa fa-chevron-up ml-2' : 'fa fa-chevron-down ml-2'"
-            ></i>
-          </button>
+  <!-- Dropdown trigger (icon removed, font set to normal) -->
+  <button
+    @click="toggleVisibility(facetInfo.facetKey)"
+    class="btn btn-sm bg-white border border-gray-300 text-black hover:bg-gray-100 flex items-center drop-shadow font-normal"
+  >
+    {{ facetInfo.facet }}
+    <i
+      :class="visibleFacets[facetInfo.facetKey] ? 'fa fa-chevron-up ml-2' : 'fa fa-chevron-down ml-2'"
+    ></i>
+  </button>
 
           <!-- Dropdown menu -->
           <div
