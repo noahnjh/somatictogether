@@ -829,7 +829,8 @@ totalPages() {
                                  Papa.parse(csvData, {
                                     header: true,
                                     skipEmptyLines: true,
-                                    complete: (results) => {
+complete: (results) => {
+  // Normalize keys to lowercase
   this.allItems = results.data.map(item => {
     const newItem = {};
     Object.keys(item).forEach(key => {
@@ -837,8 +838,17 @@ totalPages() {
     });
     return newItem;
   });
+
+  // 🔀 Randomize only once per session (not on every filter/pagination)
+  if (!sessionStorage.getItem('directoryShuffled')) {
+    this.allItems = this.allItems.sort(() => Math.random() - 0.5);
+    sessionStorage.setItem('directoryShuffled', 'true');
+  }
+
+  // Initialize items with the randomized order
   this.items = this.allItems;
-  console.log("Items loaded: ", this.items); // Debugging log
+
+  console.log("Items randomized and loaded:", this.items);
   console.log("Example Instagram link: ", this.items[0]['instagram profile link']);
   console.log("Raw CSV keys from first item:", Object.keys(results.data[0]));
   console.log("Raw CSV first item:", results.data[0]);
