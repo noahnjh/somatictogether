@@ -578,13 +578,18 @@ footer, .directory-container, .content-wrapper {
                 trimDescription(description) {
                     return description.length > this.config.descriptionLength ? description.substr(0, this.config.descriptionLength) + '...' : description;
                 },
-                toggleVisibility(facetName) {
-                    if (!this.visibleFacets[facetName]) {
-                        this.$set(this.visibleFacets, facetName, true);
-                    } else {
-                        this.visibleFacets[facetName] = !this.visibleFacets[facetName];
-                    }
-                },
+toggleVisibility(facetName) {
+  // Close all other dropdowns first
+  Object.keys(this.visibleFacets).forEach(key => {
+    if (key !== facetName) {
+      this.visibleFacets[key] = false;
+    }
+  });
+
+  // Toggle the clicked one
+  this.$set(this.visibleFacets, facetName, !this.visibleFacets[facetName]);
+},
+
                 toggleFacet(facetName, value) {
                     facetName = facetName.toLowerCase();
                     value = value.toLowerCase();
@@ -825,6 +830,21 @@ totalPages() {
   console.log("Raw CSV first item:", results.data[0]);
   this.getUrlParams(); // Apply filters from URL after loading data
   this.isLoading = false;
+  // Close dropdowns when clicking outside
+document.addEventListener('click', (event) => {
+  const app = this.$el;
+  if (!app.contains(event.target)) return;
+  
+  // If the click is NOT inside any open dropdown or button, close all
+  const clickedInsideDropdown = event.target.closest('.absolute.z-50');
+  const clickedButton = event.target.closest('button.btn-sm');
+  if (!clickedInsideDropdown && !clickedButton) {
+    Object.keys(this.visibleFacets).forEach(key => {
+      this.visibleFacets[key] = false;
+    });
+  }
+});
+                                     
 }
 
                                 });
