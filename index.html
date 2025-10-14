@@ -839,11 +839,8 @@ complete: (results) => {
     return newItem;
   });
 
-  // 🔀 Randomize only once per session (not on every filter/pagination)
-  if (!sessionStorage.getItem('directoryShuffled')) {
-    this.allItems = this.allItems.sort(() => Math.random() - 0.5);
-    sessionStorage.setItem('directoryShuffled', 'true');
-  }
+  // 🔀 Always randomize the order on each page load
+  this.allItems = this.allItems.sort(() => Math.random() - 0.5);
 
   // Initialize items with the randomized order
   this.items = this.allItems;
