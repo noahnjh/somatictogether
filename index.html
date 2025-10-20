@@ -728,45 +728,48 @@ async searchByLocation() {
 
             },
             computed: {
-                facetCounts() {
-                    const facetValues = {};
-                    this.allItems.forEach(item => {
-                        this.config.activeFacets.forEach(facetName => {
-                            const LowerCaseFacetName = facetName.toLowerCase();
-                            if (item[LowerCaseFacetName]) {
-                                const values = item[LowerCaseFacetName].split(',').map(value => value.trim().toLowerCase()).filter(value => value !== "");
-                                values.forEach(value => {
-                                    if (!facetValues[LowerCaseFacetName]) {
-                                        facetValues[LowerCaseFacetName] = {};
-                                    }
-                                    if (!facetValues[LowerCaseFacetName][value]) {
-                                        facetValues[LowerCaseFacetName][value] = 0;
-                                    }
-                                    facetValues[LowerCaseFacetName][value]++;
-                                });
-                            }
-                        });
-                    });
+facetCounts() {
+  const facetValues = {};
 
-                    const result = [];
-                    Object.keys(facetValues).forEach(facetName => {
-                        const facets = Object.keys(facetValues[facetName]).map(value => ({
-                            value: value,
-                            count: facetValues[facetName][value]
-                        }));
-                        facets.sort((a, b) => b.count - a.count);
-// Find the original-cased version of the facet name from config.yaml
-const originalFacetName =
-  this.config.activeFacets.find(f => f.toLowerCase() === facetName.toLowerCase()) || facetName;
+  // Build facet counts
+  this.allItems.forEach(item => {
+    this.config.activeFacets.forEach(facetName => {
+      const lowerFacet = facetName.toLowerCase();
+      if (item[lowerFacet]) {
+        const values = item[lowerFacet]
+          .split(',')
+          .map(v => v.trim().toLowerCase())
+          .filter(v => v !== "");
+        values.forEach(value => {
+          if (!facetValues[lowerFacet]) facetValues[lowerFacet] = {};
+          facetValues[lowerFacet][value] = (facetValues[lowerFacet][value] || 0) + 1;
+        });
+      }
+    });
+  });
 
-result.push({
-  facet: originalFacetName, // display name (original case)
-  facetKey: facetName.toLowerCase(), // for internal lookups
-  values: facets
-});
-                    });
-                    return result;
-                },
+  // Return facets in the same order as YAML
+  const result = this.config.activeFacets.map(facetName => {
+    const lowerFacet = facetName.toLowerCase();
+    const values = facetValues[lowerFacet]
+      ? Object.keys(facetValues[lowerFacet]).map(value => ({
+          value,
+          count: facetValues[lowerFacet][value],
+        }))
+      : [];
+
+    values.sort((a, b) => b.count - a.count);
+
+    return {
+      facet: facetName,           // Keep original case from YAML
+      facetKey: lowerFacet,       // Internal reference
+      values,
+    };
+  });
+
+  return result;
+},
+
 filteredItems() {
   let filtered = this.items;
 
