@@ -837,7 +837,10 @@ complete: (results) => {
     Object.keys(item).forEach(key => {
       newItem[key.toLowerCase()] = item[key];
     });
-    return newItem;
+    // Alias support for “Name (First Last)” → “name”
+    newItem.name = newItem['name (first last)'] || newItem.name;
+          
+      return newItem;
   });
 
   // 🔀 Always randomize the order on each page load
