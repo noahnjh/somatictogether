@@ -898,8 +898,11 @@ complete: (results) => {
     newItem.name = newItem['name (first last)'] || newItem.name;
           
       return newItem;
-  });
-
+  })
+    
+  // Only include rows where "Approved" is "yes"
+  .filter(item => (item.approved || '').trim().toLowerCase() === 'yes');
+                                
   // 🔀 Always randomize the order on each page load
   this.allItems = this.allItems.sort(() => Math.random() - 0.5);
 
