@@ -423,19 +423,6 @@ footer, .directory-container, .content-wrapper {
           </span>
         </div>
       </div>
-<!-- Ethnicity -->
-<div v-if="selectedItem.ethnicity && selectedItem.ethnicity.trim() !== ''">
-  <strong class="block mb-1">Ethnicity:</strong>
-  <div class="flex flex-wrap">
-    <span
-      v-for="ethnicity in selectedItem.ethnicity.split(',').map(e => e.trim()).filter(Boolean)"
-      :key="ethnicity"
-      class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm mr-2 mb-2"
-    >
-      {{ ethnicity }}
-    </span>
-  </div>
-</div>
 
 <!-- Gender -->
 <div v-if="selectedItem.gender && selectedItem.gender.trim() !== ''">
