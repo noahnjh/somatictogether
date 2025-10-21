@@ -262,18 +262,18 @@ footer, .directory-container, .content-wrapper {
     @click="showModal(item)"
   >
     <!-- Image with hover zoom effect -->
-<div class="overflow-hidden aspect-ratio-16-9 rounded-t bg-gray-100">
+<div class="overflow-hidden aspect-ratio-16-9 rounded-t bg-gray-100 flex items-center justify-center">
   <img
     :src="item.image"
     alt="Thumbnail"
-    class="w-full h-auto object-cover"
+    class="object-contain w-full h-full"
   >
 </div>
   <div class="px-6 py-4">
 <!-- Name + Pronouns -->
 <div class="font-bold text-xl mb-1 text-black">
   {{ item.name }}
-  <span v-if="item.pronouns && item.pronouns.trim() !== ''" class="text-gray-500 text-sm">
+  <span v-if="item.pronouns && item.pronouns.trim() !== ''" class="text-gray-500 font-normal text-sm">
     ({{ item.pronouns }})
   </span>
 </div>
