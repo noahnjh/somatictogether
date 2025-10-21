@@ -937,8 +937,25 @@ document.addEventListener('click', (event) => {
                     });
             }
         });
-    </script>
 
+    </script>
+       <script>
+// --- Allow parent Squarespace page to auto-resize iframe height ---
+window.addEventListener('message', (event) => {
+  if (event.data === 'requestHeight') {
+    const height = document.documentElement.scrollHeight;
+    event.source.postMessage({ type: 'directoryHeight', height }, '*');
+  }
+});
+
+// Notify parent whenever content changes (basic reactive trigger)
+const resizeObserver = new ResizeObserver(() => {
+  const height = document.documentElement.scrollHeight;
+  window.parent.postMessage({ type: 'directoryHeight', height }, '*');
+});
+resizeObserver.observe(document.body);
+</script>
+        
 </body>
 
 </html>
