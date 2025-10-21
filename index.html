@@ -939,21 +939,31 @@ document.addEventListener('click', (event) => {
         });
 
     </script>
-       <script>
-// --- Allow parent Squarespace page to auto-resize iframe height ---
-window.addEventListener('message', (event) => {
-  if (event.data === 'requestHeight') {
-    const height = document.documentElement.scrollHeight;
-    event.source.postMessage({ type: 'directoryHeight', height }, '*');
-  }
-});
-
-// Notify parent whenever content changes (basic reactive trigger)
-const resizeObserver = new ResizeObserver(() => {
+<script>
+function sendHeight() {
   const height = document.documentElement.scrollHeight;
   window.parent.postMessage({ type: 'directoryHeight', height }, '*');
+}
+
+// Respond when Squarespace asks for height
+window.addEventListener('message', (event) => {
+  if (event.data === 'requestHeight') sendHeight();
 });
+
+// Observe *any* DOM change — not just static layout
+const observer = new MutationObserver(() => sendHeight());
+observer.observe(document.body, {
+  childList: true,
+  subtree: true,
+  attributes: true
+});
+
+// Also use ResizeObserver for layout-based changes (e.g. expanding cards)
+const resizeObserver = new ResizeObserver(() => sendHeight());
 resizeObserver.observe(document.body);
+
+// Send initial height on page load
+window.addEventListener('load', sendHeight);
 </script>
         
 </body>
