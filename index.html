@@ -794,6 +794,16 @@ facetCounts() {
           .split(',')
           .map(v => v.trim().toLowerCase())
           .filter(v => v !== "");
+        // Hide "white / european" from being a visible filter
+        if (lowerFacet === 'ethnicity') {
+          // You can add more values here if needed later
+          const hiddenEthnicities = ['white / european', 'white european', 'european'];
+          values.forEach(value => {
+            if (hiddenEthnicities.includes(value)) return;
+            if (!facetValues[lowerFacet]) facetValues[lowerFacet] = {};
+            facetValues[lowerFacet][value] = (facetValues[lowerFacet][value] || 0) + 1;
+          });
+        } else {          
         values.forEach(value => {
           if (!facetValues[lowerFacet]) facetValues[lowerFacet] = {};
           facetValues[lowerFacet][value] = (facetValues[lowerFacet][value] || 0) + 1;
