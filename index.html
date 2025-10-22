@@ -20,7 +20,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  background: white;
+  background: #F0F0F0;
   z-index: 1000;
   text-align: left;
   padding: 0.75rem 1.5rem 0.5rem 1.5rem;
@@ -31,7 +31,7 @@
 .brand-link {
   display: block;
   font-family: 'Ovo', serif;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   color: #137338;
   text-decoration: none;
   font-weight: normal;
@@ -39,18 +39,18 @@
 
 /* Subtitle centered beneath title */
 .brand-subtext {
-  display: block;
   font-family: 'Ovo', serif;
   font-size: 1rem;
   color: #137338;
   text-decoration: none;
-  text-align: center;
+  text-align: left; /* not centered across the page */
   margin-top: 0.15rem;
+  margin-left: 0.2rem; /* slight visual alignment tweak */
 }
 
 .brand-subtext:hover,
 .brand-link:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 /* Push content down below fixed header */
@@ -180,17 +180,28 @@ html, body {
 footer, .directory-container, .content-wrapper {
   background-color: #ffffff !important;
 }
+        @media (max-width: 640px) {
+  .brand-link {
+    font-size: 1.2rem; /* smaller on mobile */
+  }
+  .brand-subtext {
+    font-size: 0.9rem;
+  }
+}
+
     </style>
 </head>
 
     <body class="bg-white">
 <header class="brand-header">
-  <a href="https://www.somatictogether.com" class="brand-link">
-    SOMATIC TOGETHER
-  </a>
-  <a href="https://www.somatictogether.com" class="brand-subtext">
-    (return to homepage)
-  </a>
+  <div class="flex flex-col items-start">
+    <a href="https://www.somatictogether.com" class="brand-link">
+      SOMATIC TOGETHER
+    </a>
+    <a href="https://www.somatictogether.com" class="brand-subtext">
+      (return to homepage)
+    </a>
+  </div>
 </header>
     <div id="app" class="p-5">
 <!-- 🔍 Unified Search Bar (Responsive) -->
@@ -1056,7 +1067,12 @@ resizeObserver.observe(document.body);
 window.addEventListener('load', sendHeightDebounced);
 setTimeout(sendHeightDebounced, 600);
 </script>
-
+<footer class="text-center py-4 mt-10" style="background-color: #F0F0F0;">
+  <p class="text-gray-700 text-sm">
+    Our directory is new and growing. Additional practitioners listings can be found via the directories linked 
+    <a href="https://www.somatictogether.com/more-directories" class="text-[#137338] hover:underline">here</a>.
+  </p>
+</footer>
         
 </body>
 
