@@ -14,45 +14,55 @@
     <link href="https://fonts.googleapis.com/css2?family=Ovo&display=swap" rel="stylesheet">
 
     <style>
-/* --- Header Link + Subtext --- */
-.brand-container {
+/* --- Full-width header bar --- */
+.brand-header {
   position: fixed;
-  top: 1rem;
-  left: 1.5rem;
-  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100%;
   background: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
+  z-index: 1000;
   text-align: left;
+  padding: 0.75rem 1.5rem 0.5rem 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
+/* Main title */
 .brand-link {
   display: block;
   font-family: 'Ovo', serif;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   color: #137338;
   text-decoration: none;
+  font-weight: normal;
 }
 
+/* Subtitle centered beneath title */
+.brand-subtext {
+  display: block;
+  font-family: 'Ovo', serif;
+  font-size: 1rem;
+  color: #137338;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 0.15rem;
+}
+
+.brand-subtext:hover,
 .brand-link:hover {
   text-decoration: underline;
 }
 
-.brand-subtext {
-  font-size: 0.8rem;
-  color: #4b5563; /* gray-700 */
-  margin-top: 0.1rem;
-}
-
-/* Add extra top padding so modals and content appear below the header */
+/* Push content down below fixed header */
 body {
-  padding-top: 4.5rem; /* was 3.5rem — gives more breathing room */
+  padding-top: 5rem; /* ensures search bar and cards start below header */
 }
 
-/* When the modal (open card) appears, offset it below the header */
+/* Adjust open card modal position */
 .fixed.inset-0.z-50 {
-  padding-top: 4.5rem; /* pushes modal content below SOMATIC TOGETHER link */
+  padding-top: 5rem;
 }
+
         .aspect-ratio-16-9 {
             position: relative;
             width: 100%;
@@ -174,11 +184,14 @@ footer, .directory-container, .content-wrapper {
 </head>
 
     <body class="bg-white">
-<div class="brand-container">
-  <a href="https://www.somatictogether.com" class="brand-link">SOMATIC TOGETHER</a>
-  <div class="brand-subtext">return to homepage</div>
-</div>
-
+<header class="brand-header">
+  <a href="https://www.somatictogether.com" class="brand-link">
+    SOMATIC TOGETHER
+  </a>
+  <a href="https://www.somatictogether.com" class="brand-subtext">
+    (return to homepage)
+  </a>
+</header>
     <div id="app" class="p-5">
 <!-- 🔍 Unified Search Bar (Responsive) -->
 <div class="search-container bg-white text-black p-4 rounded shadow-sm mb-6 border border-gray-300">
