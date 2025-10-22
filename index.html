@@ -43,11 +43,16 @@
   }
 }
 
-/* Body padding for fixed header */
+/* Body padding for fixed header — adjust dynamically */
 body {
-  padding-top: 5rem;
+  padding-top: 3.75rem; /* tighter spacing to match header height */
 }
 
+@media (max-width: 640px) {
+  body {
+    padding-top: 3.25rem; /* slightly smaller on mobile */
+  }
+}
 
 /* Adjust open card modal position */
 .fixed.inset-0.z-50 {
@@ -186,10 +191,11 @@ footer, .directory-container, .content-wrapper {
     <body class="bg-white">
 <header class="brand-header flex items-center justify-between">
   <!-- Left side: Back arrow + HOME (hidden on mobile) -->
-  <a href="https://www.somatictogether.com/" class="flex items-center text-[#137338] hover:text-[#0f5e2d] space-x-1">
-    <i class="fas fa-arrow-left text-xl"></i>
-    <span class="text-base font-medium hidden sm:inline">HOME</span>
-  </a>
+<a href="https://www.somatictogether.com/"
+   class="flex items-center bg-white border border-[#137338] text-[#137338] hover:bg-[#137338] hover:text-white transition-colors duration-200 rounded-full px-3 py-1 shadow-sm">
+  <i class="fas fa-arrow-left text-sm mr-2"></i>
+  <span class="font-medium text-sm tracking-wide">Home</span>
+</a>
 
   <!-- Centered title (not a link) -->
   <div class="flex-1 text-center">
