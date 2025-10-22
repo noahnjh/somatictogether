@@ -21,7 +21,7 @@
   left: 0;
   width: 100%;
   background: #F0F0F0;
-  z-index: 1000;
+  z-index: 2000; /* slightly higher to always stay above content */
   padding: 0.75rem 1.5rem 0.5rem 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
@@ -39,28 +39,31 @@
 /* Make header responsive */
 @media (max-width: 640px) {
   .brand-title {
-    font-size: 1.1rem; /* smaller on mobile */
-  }
-}
-
-/* Body padding for fixed header — adjust dynamically */
-body {
-  padding-top: 3.75rem; /* tighter spacing to match header height */
-}
-
-@media (max-width: 640px) {
-  body {
-    padding-top: 3.25rem; /* slightly smaller on mobile */
+    font-size: 1.1rem;
   }
 }
 
 .fixed.inset-0.z-50 {
-  padding-top: 0; /* remove the transparent gap */
+  padding-top: 3.75rem;
+  background-color: #fff;
 }
 
-.fixed.inset-0.z-50 .p-6 {
-  margin-top: 1rem; /* optional: add small space below sticky header */
+/* Make the back header sticky directly below main header */
+.modal-back-header {
+  position: sticky;
+  top: 3.75rem;
+  z-index: 999;
+  background: white;
+  border-bottom: 1px solid #d1d5db;
 }
+
+/* Responsive correction for smaller screens */
+@media (max-width: 640px) {
+  .modal-back-header {
+    top: 3.25rem;
+  }
+}
+
 
         .aspect-ratio-16-9 {
             position: relative;
@@ -411,16 +414,16 @@ footer, .directory-container, .content-wrapper {
   v-if="selectedItem"
   class="fixed inset-0 z-50 bg-white overflow-y-auto"
 >
-  <!-- Back header -->
-<div class="sticky top-0 bg-white border-b border-gray-300 flex items-center p-4">
+<!-- Back header (now sticky below site header) -->
+<div class="modal-back-header flex items-center p-4">
   <button
     @click="closeModal()"
     class="text-gray-700 hover:text-[#137338] flex items-center space-x-2"
   >
-      <i class="fas fa-arrow-left"></i>
-      <span class="font-semibold">Back</span>
-    </button>
-  </div>
+    <i class="fas fa-arrow-left"></i>
+    <span class="font-semibold">Back</span>
+  </button>
+</div>
 
   <!-- Main content -->
   <div class="p-6 max-w-6xl mx-auto">
