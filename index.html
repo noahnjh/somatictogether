@@ -11,7 +11,24 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ovo&display=swap" rel="stylesheet">
+
     <style>
+          /* Somatic Together site link styling */
+  .brand-link {
+    position: fixed;       /* keeps it visible even when scrolling */
+    top: 1rem;
+    left: 1rem;
+    font-family: 'Ovo', serif;
+    font-size: 1.5rem;     /* adjust size to taste */
+    color: #137338;
+    text-decoration: none;
+    z-index: 1000;
+  }
+
+  .brand-link:hover {
+    text-decoration: underline;
+  }
         .aspect-ratio-16-9 {
             position: relative;
             width: 100%;
@@ -133,6 +150,7 @@ footer, .directory-container, .content-wrapper {
 </head>
 
     <body class="bg-white">
+        <a href="https://www.somatictogether.com" class="brand-link">SOMATIC TOGETHER</a>
     <div id="app" class="p-5">
 <!-- 🔍 Unified Search Bar (Responsive) -->
 <div class="search-container bg-white text-black p-4 rounded shadow-sm mb-6 border border-gray-300">
