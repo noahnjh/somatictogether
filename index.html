@@ -21,9 +21,9 @@
   left: 0;
   width: 100%;
   background: #F0F0F0;
-  z-index: 2000; /* slightly higher to always stay above content */
-  padding: 0.75rem 1.5rem 0.5rem 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  z-index: 1000; /* slightly higher to always stay above content */
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
 }
 
 /* Centered title text */
@@ -47,16 +47,17 @@
   padding-top: 3.75rem;
   background-color: #fff;
 }
-
-/* Make the back header sticky directly below main header */
-.modal-back-header {
-  position: sticky;
-  top: 3.75rem;
-  z-index: 999;
-  background: white;
-  border-bottom: 1px solid #d1d5db;
+        
+/* Add extra top padding so modals and content appear below the header */
+body {
+  padding-top: 4.5rem; /* was 3.5rem — gives more breathing room */
 }
 
+/* When the modal (open card) appears, offset it below the header */
+.fixed.inset-0.z-50 {
+  padding-top: 4.5rem; /* pushes modal content below SOMATIC TOGETHER link */
+}
+        
 /* Responsive correction for smaller screens */
 @media (max-width: 640px) {
   .modal-back-header {
@@ -414,8 +415,8 @@ footer, .directory-container, .content-wrapper {
   v-if="selectedItem"
   class="fixed inset-0 z-50 bg-white overflow-y-auto"
 >
-<!-- Back header (now sticky below site header) -->
-<div class="modal-back-header flex items-center p-4">
+<!-- Back header -->
+<div class="sticky top-0 bg-white border-b border-gray-300 flex items-center p-4">
   <button
     @click="closeModal()"
     class="text-gray-700 hover:text-[#137338] flex items-center space-x-2"
