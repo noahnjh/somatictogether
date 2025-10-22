@@ -14,20 +14,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Ovo&display=swap" rel="stylesheet">
 
     <style>
-          /* Somatic Together site link styling */
+  /* Somatic Together site link styling */
   .brand-link {
-    position: fixed;       /* keeps it visible even when scrolling */
-    top: 1rem;
-    left: 1rem;
+    position: fixed;
+    top: 1.25rem;        /* move it down slightly (was 1rem) */
+    left: 1.5rem;        /* adds a little breathing room from left edge */
     font-family: 'Ovo', serif;
-    font-size: 1.5rem;     /* adjust size to taste */
+    font-size: 1.5rem;
     color: #137338;
     text-decoration: none;
     z-index: 1000;
+    background: white;   /* optional – ensures it’s readable over content */
+    padding: 0.25rem 0.5rem;  /* subtle space around the text */
+    border-radius: 0.25rem;   /* softens the edges slightly */
   }
 
   .brand-link:hover {
     text-decoration: underline;
+  }
+
+  /* Add top padding to main content so the link doesn’t overlap */
+  body {
+    padding-top: 3.5rem; /* adjust depending on header height */
   }
         .aspect-ratio-16-9 {
             position: relative;
