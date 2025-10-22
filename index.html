@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Ovo&display=swap" rel="stylesheet">
 
     <style>
-/* --- Full-width header bar --- */
+/* --- Header Layout --- */
 .brand-header {
   position: fixed;
   top: 0;
@@ -22,41 +22,32 @@
   width: 100%;
   background: #F0F0F0;
   z-index: 1000;
-  text-align: left;
   padding: 0.75rem 1.5rem 0.5rem 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-/* Main title */
-.brand-link {
-  display: block;
+/* Centered title text */
+.brand-title {
   font-family: 'Ovo', serif;
   font-size: 1.4rem;
   color: #137338;
-  text-decoration: none;
   font-weight: normal;
+  text-align: center;
+  margin: 0;
 }
 
-/* Subtitle centered beneath title */
-.brand-subtext {
-  font-family: 'Ovo', serif;
-  font-size: 1rem;
-  color: #137338;
-  text-decoration: none;
-  text-align: left; /* not centered across the page */
-  margin-top: 0.15rem;
-  margin-left: 0.2rem; /* slight visual alignment tweak */
+/* Make header responsive */
+@media (max-width: 640px) {
+  .brand-title {
+    font-size: 1.1rem; /* smaller on mobile */
+  }
 }
 
-.brand-subtext:hover,
-.brand-link:hover {
-  text-decoration: none;
-}
-
-/* Push content down below fixed header */
+/* Body padding for fixed header */
 body {
-  padding-top: 5rem; /* ensures search bar and cards start below header */
+  padding-top: 5rem;
 }
+
 
 /* Adjust open card modal position */
 .fixed.inset-0.z-50 {
@@ -193,15 +184,20 @@ footer, .directory-container, .content-wrapper {
 </head>
 
     <body class="bg-white">
-<header class="brand-header">
-  <div class="flex flex-col items-start">
-    <a href="https://www.somatictogether.com" class="brand-link">
-      SOMATIC TOGETHER
-    </a>
-    <a href="https://www.somatictogether.com" class="brand-subtext">
-      (return to homepage)
-    </a>
+<header class="brand-header flex items-center justify-between">
+  <!-- Left side: Back arrow + HOME (hidden on mobile) -->
+  <a href="https://www.somatictogether.com/" class="flex items-center text-[#137338] hover:text-[#0f5e2d] space-x-1">
+    <i class="fas fa-arrow-left text-xl"></i>
+    <span class="text-base font-medium hidden sm:inline">HOME</span>
+  </a>
+
+  <!-- Centered title (not a link) -->
+  <div class="flex-1 text-center">
+    <h1 class="brand-title">SOMATIC TOGETHER DIRECTORY</h1>
   </div>
+
+  <!-- Placeholder for right-side spacing to balance layout -->
+  <div class="w-8 sm:w-16"></div>
 </header>
     <div id="app" class="p-5">
 <!-- 🔍 Unified Search Bar (Responsive) -->
