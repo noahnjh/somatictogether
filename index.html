@@ -618,22 +618,10 @@ footer, .directory-container, .content-wrapper {
               
 showModal(item) {
   this.selectedItem = item;
-  this.$nextTick(() => {
-    try {
-      const height = computeNeededHeight();
-      window.parent.postMessage({ type: 'directoryHeight', height }, '*');
-    } catch (e) { /* ignore */ }
-  });
 },
-  closeModal() {
-    this.selectedItem = null;
-    this.$nextTick(() => {
-      try {
-        const height = computeNeededHeight();
-        window.parent.postMessage({ type: 'directoryHeight', height }, '*');
-      } catch (e) { /* ignore */ }
-    });
-  },
+closeModal() {
+  this.selectedItem = null;
+},
                 
                 trimDescription(description) {
                     return description.length > this.config.descriptionLength ? description.substr(0, this.config.descriptionLength) + '...' : description;
