@@ -54,9 +54,12 @@ body {
   }
 }
 
-/* Adjust open card modal position */
 .fixed.inset-0.z-50 {
-  padding-top: 0;
+  padding-top: 0; /* remove the transparent gap */
+}
+
+.fixed.inset-0.z-50 .p-6 {
+  margin-top: 1rem; /* optional: add small space below sticky header */
 }
 
         .aspect-ratio-16-9 {
