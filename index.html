@@ -14,6 +14,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Ovo&display=swap" rel="stylesheet">
 
     <style>
+/* Prevent flash of raw mustache syntax before Vue compiles */
+[v-cloak] {
+  display: none !important;
+}
+        
 /* --- Header Layout --- */
 .brand-header {
   position: fixed;
@@ -253,7 +258,7 @@ footer, .directory-container, .content-wrapper {
   <!-- Placeholder for right-side spacing to balance layout -->
  <!-- <div class="w-8 sm:w-16"></div> -->
 </header>
-    <div id="app" class="p-5">
+   <div id="app" class="p-5" v-cloak>
 <!-- 🔍 Unified Search Bar (Responsive) -->
 <div class="search-container bg-white text-black p-4 rounded shadow-sm mb-6 border border-gray-300">
   <div class="flex flex-col md:flex-row md:items-center md:space-x-4">
@@ -455,6 +460,7 @@ footer, .directory-container, .content-wrapper {
 <div
   v-if="selectedItem"
   class="fixed inset-0 z-50 bg-white overflow-y-auto"
+    v-cloak
 >
 <!-- Back header -->
 <div class="sticky top-0 bg-white border-b border-gray-300 flex items-center p-4">
