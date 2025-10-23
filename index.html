@@ -41,20 +41,23 @@
 }
 
 /* Make header responsive */
+/* --- Mobile Header Adjustments --- */
 @media (max-width: 640px) {
+  .brand-header a {
+    padding: 0.25rem 0.5rem; /* tighter padding */
+    font-size: 0.75rem;      /* smaller overall text */
+  }
+  .brand-header a span {
+    font-size: 0.7rem;       /* smaller label text */
+  }
+  .brand-header a i {
+    font-size: 0.7rem;       /* smaller icon size */
+  }
   .brand-title {
-    font-size: 1rem;
+    font-size: 1rem;         /* smaller header title */
   }
-   header .brand-header a {
-    padding: 0.25rem 0.5rem; /* reduce padding */
-  }
-  header .brand-header a span {
-    font-size: 0.7rem; /* smaller text */
-  }
-  header .brand-header i {
-    font-size: 0.75rem; /* smaller icons */
-  }   
 }
+
 
 /*.fixed.inset-0.z-50 {
   padding-top: 0;
