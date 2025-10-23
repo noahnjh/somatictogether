@@ -104,7 +104,12 @@ body {
   background-color: #fff;
 }
 
-
+.green-divider {
+  border-top: 3px solid #137338;
+  width: calc(100% - 2rem); /* slight padding on sides */
+  margin: 0 auto;           /* centers it */
+  border-radius: 2px;
+}
 
         .aspect-ratio-16-9 {
             position: relative;
@@ -512,6 +517,8 @@ footer, .directory-container, .content-wrapper {
 
     <!-- Full-width sections -->
     <div class="mt-8 space-y-6 text-left">
+        <!-- Stylized divider line -->
+    <div class="green-divider my-6"></div>
       <!-- Session Format -->
       <div v-if="selectedItem['session format']">
         <strong class="block mb-1">Session Format:</strong>
@@ -1182,7 +1189,7 @@ window.addEventListener('load', () => {
   setTimeout(() => {
     const footer = document.getElementById('footer');
     if (footer) footer.style.display = 'block';
-  }, 500); // delay 0.5 seconds
+  }, 1000); // delay 1 second
 });
 </script>
        
