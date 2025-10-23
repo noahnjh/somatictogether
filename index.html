@@ -766,7 +766,7 @@ preventScroll(e) {
   if (modal && !modal.contains(e.target)) {
     e.preventDefault();
   }
-}
+},
                 
                 trimDescription(description) {
                     return description.length > this.config.descriptionLength ? description.substr(0, this.config.descriptionLength) + '...' : description;
