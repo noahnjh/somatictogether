@@ -1159,12 +1159,12 @@ setTimeout(sendHeightDebounced, 600);
   });
 </script>
 <script>
-  window.addEventListener('load', () => {
+window.addEventListener('load', () => {
+  setTimeout(() => {
     const footer = document.getElementById('footer');
-    if (footer) {
-      footer.style.display = 'block';
-    }
-  });
+    if (footer) footer.style.display = 'block';
+  }, 500); // delay 0.5 seconds
+});
 </script>
        
 </body>
