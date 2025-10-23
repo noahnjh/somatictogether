@@ -21,9 +21,14 @@
   left: 0;
   width: 100%;
   background: #F0F0F0;
-  z-index: 2000; /* slightly higher to always stay above content */
-  padding: 0.5rem 0.5rem;
+  z-index: 1000;
+  padding: 0.75rem 1.5rem 0.5rem 1.5rem; /* balanced horizontal padding */
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
+
 
 /* Centered title text */
 .brand-title {
@@ -204,8 +209,8 @@ footer, .directory-container, .content-wrapper {
       <!-- Left side: FWD arrow + About (hidden on mobile) -->
 <a href="https://www.somatictogether.com/about"
    class="flex items-center bg-white border border-[#137338] text-[#137338] hover:bg-[#137338] hover:text-white transition-colors duration-200 rounded-full px-3 py-1 shadow-sm">
-    <span class="font-medium text-sm tracking-wide">About</span>
-    <i class="fas fa-arrow-right text-sm mr-2"></i>
+    <span class="font-medium text-sm tracking-wide mr-2">About</span>
+    <i class="fas fa-arrow-right text-sm"></i>
 </a>
 
 
