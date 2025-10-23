@@ -790,18 +790,26 @@ applyFilters() {
   }
 
   this.items = this.allItems.filter(item => {
-    // Every active facet group must match (AND logic)
+    // Each facet group must match at least one selected value
     return Object.keys(this.activeFacets).every(facetName => {
-      if (!item[facetName]) return false;
-      const itemFacetValues = item[facetName]
-        ? item[facetName].split(',').map(value => value.trim().toLowerCase())
-        : [];
-      const activeFacetValues = this.activeFacets[facetName];
-      // At least one active value in this facet must match
-      return Object.keys(activeFacetValues).some(value => activeFacetValues[value] && itemFacetValues.includes(value));
+      const normalizedFacet = facetName.trim().toLowerCase();
+      const itemValue = item[normalizedFacet];
+      if (!itemValue) return false; // must have that facet field
+
+      const itemFacetValues = itemValue
+        .split(',')
+        .map(v => v.trim().toLowerCase())
+        .filter(Boolean);
+
+      const activeFacetValues = Object.keys(this.activeFacets[facetName])
+        .filter(v => this.activeFacets[facetName][v]);
+
+      // Must include *all selected values* from this facet
+      return activeFacetValues.every(selectedValue => itemFacetValues.includes(selectedValue));
     });
   });
 },
+
                 resetFilters() {
                     this.activeFacets = {};
                     this.items = this.allItems;
