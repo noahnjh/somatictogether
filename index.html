@@ -43,8 +43,17 @@
 /* Make header responsive */
 @media (max-width: 640px) {
   .brand-title {
-    font-size: 0.75rem;
+    font-size: 1rem;
   }
+   header .brand-header a {
+    padding: 0.25rem 0.5rem; /* reduce padding */
+  }
+  header .brand-header a span {
+    font-size: 0.7rem; /* smaller text */
+  }
+  header .brand-header i {
+    font-size: 0.75rem; /* smaller icons */
+  }   
 }
 
 /*.fixed.inset-0.z-50 {
@@ -774,20 +783,25 @@ toggleFacet(facetName, value) {
                     });
                     console.log("Active Facets after URL params: ", this.activeFacets); // Debugging log
                 },
-                applyFilters() {
-                    if (Object.keys(this.activeFacets).length === 0) {
-                        this.items = this.allItems;
-                        return;
-                    }
-                    this.items = this.allItems.filter(item => {
-                        return Object.keys(this.activeFacets).some(facetName => {
-                            if (!item[facetName]) return false;
-                            const itemFacetValues = item[facetName] ? item[facetName].split(',').map(value => value.trim().toLowerCase()) : [];
-                            const activeFacetValues = this.activeFacets[facetName];
-                            return itemFacetValues.some(value => activeFacetValues && activeFacetValues[value]);
-                        });
-                    });
-                },
+applyFilters() {
+  if (Object.keys(this.activeFacets).length === 0) {
+    this.items = this.allItems;
+    return;
+  }
+
+  this.items = this.allItems.filter(item => {
+    // Every active facet group must match (AND logic)
+    return Object.keys(this.activeFacets).every(facetName => {
+      if (!item[facetName]) return false;
+      const itemFacetValues = item[facetName]
+        ? item[facetName].split(',').map(value => value.trim().toLowerCase())
+        : [];
+      const activeFacetValues = this.activeFacets[facetName];
+      // At least one active value in this facet must match
+      return Object.keys(activeFacetValues).some(value => activeFacetValues[value] && itemFacetValues.includes(value));
+    });
+  });
+},
                 resetFilters() {
                     this.activeFacets = {};
                     this.items = this.allItems;
