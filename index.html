@@ -63,11 +63,13 @@
   }
 }
 
-
-/*.fixed.inset-0.z-50 {
-  padding-top: 0;
-  background-color: #fff;
-}*/
+/* Prevent background scrolling when modal is open */
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+    padding-right: 0;
+}
         
 body {
   margin: 0;
@@ -744,10 +746,27 @@ footer, .directory-container, .content-wrapper {
               
 showModal(item) {
   this.selectedItem = item;
+  document.body.classList.add('modal-open');
+
+  // 🧭 Block background touch scrolling on iOS Safari
+  document.addEventListener('touchmove', this.preventScroll, { passive: false });
 },
+
 closeModal() {
   this.selectedItem = null;
+  document.body.classList.remove('modal-open');
+
+  // 🧭 Restore touch scrolling
+  document.removeEventListener('touchmove', this.preventScroll, { passive: false });
 },
+
+preventScroll(e) {
+  // Only block if touch is not inside the modal content
+  const modal = document.querySelector('.fixed.inset-0.z-50');
+  if (modal && !modal.contains(e.target)) {
+    e.preventDefault();
+  }
+}
                 
                 trimDescription(description) {
                     return description.length > this.config.descriptionLength ? description.substr(0, this.config.descriptionLength) + '...' : description;
