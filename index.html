@@ -1136,7 +1136,7 @@ resizeObserver.observe(document.body);
 window.addEventListener('load', sendHeightDebounced);
 setTimeout(sendHeightDebounced, 600);
 </script>
-<footer class="text-center py-4 mt-10" style="background-color: #F0F0F0;">
+<footer id="footer" class="text-center py-4 mt-10" style="background-color: #F0F0F0; display: none;">
   <p class="text-gray-700 text-sm">
     Our directory is new and growing. Additional practitioners listings can be found via the directories linked 
     <a href="https://www.somatictogether.com/more-directories" class="text-[#137338] hover:underline">here</a>.
@@ -1158,7 +1158,15 @@ setTimeout(sendHeightDebounced, 600);
     }
   });
 </script>
-        
+<script>
+  window.addEventListener('load', () => {
+    const footer = document.getElementById('footer');
+    if (footer) {
+      footer.style.display = 'block';
+    }
+  });
+</script>
+       
 </body>
 
 </html>
