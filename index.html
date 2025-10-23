@@ -64,17 +64,39 @@
   background-color: #fff;
 }*/
         
-/* Add extra top padding so modals and content appear below the header */
 body {
-  padding-top: 2.65rem; /* was 3.5rem — gives more breathing room */
-    background-color: #fff;
+  margin: 0;
+  background-color: #fff;
 }
 
-/* When the modal (open card) appears, offset it below the header */
-.fixed.inset-0.z-50 {
-  padding-top: 3.25rem; /* pushes modal content below SOMATIC TOGETHER link */
-    background-color: #fff;
+/* Make sure the main content starts below the fixed header */
+#app {
+  margin-top: var(--header-height, 0);
+  background-color: #fff;
 }
+
+/* Automatically adjust for header height using CSS variable */
+.brand-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #F0F0F0;
+  z-index: 1000;
+  padding: 0.75rem 1.5rem 0.5rem 1.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Modal overlay should also start below the header */
+.fixed.inset-0.z-50 {
+  top: var(--header-height, 0);
+  background-color: #fff;
+}
+
 
 
         .aspect-ratio-16-9 {
@@ -525,7 +547,7 @@ footer, .directory-container, .content-wrapper {
       </div>
 
 <!-- Gender -->
-<div v-if="selectedItem.gender && selectedItem.gender.trim() !== ''">
+<!--<div v-if="selectedItem.gender && selectedItem.gender.trim() !== ''">
   <strong class="block mb-1">Gender:</strong>
   <div class="flex flex-wrap">
     <span
@@ -536,7 +558,7 @@ footer, .directory-container, .content-wrapper {
       {{ gender }}
     </span>
   </div>
-</div>
+</div>-->
       <!-- Sexuality -->
       <div v-if="selectedItem.sexuality && selectedItem.sexuality.trim() !== ''">
         <strong class="block mb-1">Sexuality:</strong>
@@ -1114,6 +1136,22 @@ setTimeout(sendHeightDebounced, 600);
     <a href="https://www.somatictogether.com/more-directories" class="text-[#137338] hover:underline">here</a>.
   </p>
 </footer>
+<script>
+  // Set --header-height to match the real header height
+  window.addEventListener('load', () => {
+    const header = document.querySelector('.brand-header');
+    if (header) {
+      document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
+    }
+  });
+  // Update on resize, in case layout changes on mobile
+  window.addEventListener('resize', () => {
+    const header = document.querySelector('.brand-header');
+    if (header) {
+      document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
+    }
+  });
+</script>
         
 </body>
 
