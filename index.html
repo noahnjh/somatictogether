@@ -49,10 +49,13 @@
         
 /* Add extra top padding so modals and content appear below the header */
 body {
-  padding-top: 3.75rem; /* was 3.5rem — gives more breathing room */
+  padding-top: 0; /* was 3.5rem — gives more breathing room */
 }
 
-
+/* When the modal (open card) appears, offset it below the header */
+.fixed.inset-0.z-50 {
+  padding-top: 3.75rem; /* pushes modal content below SOMATIC TOGETHER link */
+}
 
 
         .aspect-ratio-16-9 {
