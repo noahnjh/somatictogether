@@ -852,7 +852,7 @@ applyFilters() {
     return Object.keys(this.activeFacets).every(facetName => {
       const normalizedFacet = facetName.trim().toLowerCase();
       const itemValue = item[normalizedFacet];
-      if (!itemValue) return false; // must have that facet field
+      if (!itemValue) return false;
 
       const itemFacetValues = itemValue
         .split(',')
@@ -862,8 +862,42 @@ applyFilters() {
       const activeFacetValues = Object.keys(this.activeFacets[facetName])
         .filter(v => this.activeFacets[facetName][v]);
 
-      // Must include *all selected values* from this facet
-      return activeFacetValues.every(selectedValue => itemFacetValues.includes(selectedValue));
+      // 🧠 Special handling for Session Format logic
+      if (normalizedFacet === 'session format') {
+        const hasHybrid = itemFacetValues.includes('hybrid');
+        const hasInPerson = itemFacetValues.includes('in person');
+        const hasOnline = itemFacetValues.includes('online');
+
+        // Case 1: User selected "In person" or "Online"
+        if (
+          activeFacetValues.includes('in person') ||
+          activeFacetValues.includes('online')
+        ) {
+          // Include if item matches selected OR has Hybrid
+          return activeFacetValues.some(selectedValue =>
+            itemFacetValues.includes(selectedValue) || hasHybrid
+          );
+        }
+
+        // Case 2: User selected "Hybrid"
+        if (activeFacetValues.includes('hybrid')) {
+          // Include if item is Hybrid OR has both In person and Online
+          return (
+            hasHybrid ||
+            (hasInPerson && hasOnline)
+          );
+        }
+
+        // Case 3: Other combinations (fallback)
+        return activeFacetValues.every(selectedValue =>
+          itemFacetValues.includes(selectedValue)
+        );
+      }
+
+      // Default behavior for all other facets
+      return activeFacetValues.every(selectedValue =>
+        itemFacetValues.includes(selectedValue)
+      );
     });
   });
 },
