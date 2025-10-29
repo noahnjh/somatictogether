@@ -447,34 +447,81 @@ footer, .directory-container, .content-wrapper {
   <div
     v-for="item in paginatedItems"
     :key="item.id"
-    class="flex items-start bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition cursor-pointer p-4"
+    class="flex flex-col md:flex-row md:items-start bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition cursor-pointer p-4"
     @click="showModal(item)"
   >
-    <div class="flex-shrink-0 w-24 h-24 rounded overflow-hidden bg-gray-100 flex items-center justify-center">
-      <img :src="item.image" alt="Thumbnail" class="object-cover w-full h-full">
+    <!-- Left side: Image + Basic Info -->
+    <div class="flex flex-1 items-start">
+      <div class="flex-shrink-0 w-24 h-24 rounded overflow-hidden bg-gray-100 flex items-center justify-center">
+        <img :src="item.image" alt="Thumbnail" class="object-cover w-full h-full">
+      </div>
+
+      <div class="ml-4 flex-1">
+        <div class="font-bold text-lg text-black">
+          {{ item.name }}
+          <span v-if="item.pronouns && item.pronouns.trim() !== ''" class="text-gray-500 font-normal text-sm">
+            ({{ item.pronouns }})
+          </span>
+        </div>
+        <div class="text-gray-700 text-sm mb-1">{{ item.title }}</div>
+        <p class="text-sm text-gray-700 mb-1 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5s-3 1.343-3 3 1.343 3 3 3z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-7.333 8-13a8 8 0 10-16 0c0 5.667 8 13 8 13z" />
+          </svg>
+          {{ [item.city, item.state || item['state or province'], item.country].filter(Boolean).join(', ') }}
+        </p>
+        <p v-if="item.description" class="text-gray-600 text-sm mt-1">
+          {{ trimDescription(item.description) }}
+        </p>
+      </div>
     </div>
 
-    <div class="ml-4 flex-1">
-      <div class="font-bold text-lg text-black">
-        {{ item.name }}
-        <span v-if="item.pronouns && item.pronouns.trim() !== ''" class="text-gray-500 font-normal text-sm">
-          ({{ item.pronouns }})
-        </span>
+    <!-- Right side: Contact & Links (desktop/landscape only) -->
+    <div class="hidden md:flex md:flex-col md:items-end md:justify-center md:w-1/3 mt-4 md:mt-0 text-right space-y-1">
+      <div v-if="item.website">
+        <a
+          :href="normalizeUrl(item.website)"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-[#137338] hover:underline break-all text-sm"
+          @click.stop
+        >
+          {{ item.website }}
+        </a>
       </div>
-      <div class="text-gray-700 text-sm mb-1">{{ item.title }}</div>
-      <p class="text-sm text-gray-700 mb-1 flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5s-3 1.343-3 3 1.343 3 3 3z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-7.333 8-13a8 8 0 10-16 0c0 5.667 8 13 8 13z" />
-        </svg>
-        {{ [item.city, item.state || item['state or province'], item.country].filter(Boolean).join(', ') }}
-      </p>
-      <p v-if="item.description" class="text-gray-600 text-sm mt-1">
-        {{ trimDescription(item.description) }}
-      </p>
+
+      <div v-if="item.email" class="text-sm">
+        <a
+          :href="'mailto:' + item.email"
+          class="text-black hover:text-[#137338] hover:underline"
+          @click.stop
+        >
+          {{ item.email }}
+        </a>
+      </div>
+
+      <div v-if="item.phone" class="text-sm">
+        <a
+          :href="'tel:' + item.phone"
+          class="text-black hover:text-[#137338] hover:underline"
+          @click.stop
+        >
+          {{ item.phone }}
+        </a>
+      </div>
+
+      <!-- Social icons -->
+      <div class="flex justify-end gap-3 mt-2">
+        <a v-if="item['instagram profile link']" :href="item['instagram profile link']" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-[#137338]" @click.stop><i class="fab fa-instagram"></i></a>
+        <a v-if="item['linkedin profile link']" :href="item['linkedin profile link']" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-[#137338]" @click.stop><i class="fab fa-linkedin"></i></a>
+        <a v-if="item['facebook profile link']" :href="item['facebook profile link']" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-[#137338]" @click.stop><i class="fab fa-facebook"></i></a>
+        <a v-if="item['x (twitter) profile link']" :href="item['x (twitter) profile link']" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-[#137338]" @click.stop><i class="fab fa-x-twitter"></i></a>
+      </div>
     </div>
   </div>
 </div>
+
     <!-- 🧭 Pagination Controls -->
 <div class="flex justify-center items-center space-x-2 mt-6">
   <!-- Prev Button -->
