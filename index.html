@@ -620,7 +620,7 @@ footer, .directory-container, .content-wrapper {
 <div v-if="selectedItem.website">
   <strong>Website:</strong>
   <a
-    :href="selectedItem.website"
+    :href="normalizeUrl(selectedItem.website)"
     target="_blank"
     rel="noopener noreferrer"
     class="text-black hover:text-[#137338] hover:underline ml-2"
@@ -633,7 +633,7 @@ footer, .directory-container, .content-wrapper {
 <div v-if="selectedItem['booking link']">
   <strong>Booking Link:</strong>
   <a
-    :href="selectedItem['booking link']"
+    :href="normalizeUrl(selectedItem['booking link'])"
     target="_blank"
     rel="noopener noreferrer"
     class="text-black hover:text-[#137338] hover:underline ml-2"
@@ -735,7 +735,7 @@ footer, .directory-container, .content-wrapper {
                 currentPage: 1,
                 itemsPerPage: 12,
             },
-            methods: {
+ methods: {
                 getOriginalFacetHeader(facetName) {
                   const match = this.config.activeFacets.find(f => f.toLowerCase() === facetName.toLowerCase());
                   return match || facetName;
@@ -751,6 +751,16 @@ footer, .directory-container, .content-wrapper {
                   return value; // fallback
                     },
               
+normalizeUrl(url) {
+  if (!url) return "";
+  // If the URL already starts with http or https, leave it as is
+  if (/^https?:\/\//i.test(url)) {
+    return url;
+  }
+  // Otherwise, prepend https://
+  return `https://${url}`;
+},
+                
 showModal(item) {
   this.selectedItem = item;
   document.body.classList.add('modal-open');
