@@ -847,7 +847,6 @@ footer, .directory-container, .content-wrapper {
             data: {
                 items: [],
                 allItems: [], // Store all items to reset filters
-                locationResults: null,  // ← NEW
                 selectedItem: null,
                 visibleFacets: {}, // Object to control the visibility of each facet
                 activeFacets: {},
@@ -979,15 +978,12 @@ toggleFacet(facetName, value) {
                     console.log("Active Facets after URL params: ", this.activeFacets); // Debugging log
                 },
 applyFilters() {
-const baseList = this.locationResults || this.allItems; // <-- key line
-
   if (Object.keys(this.activeFacets).length === 0) {
-    this.items = baseList;
+    this.items = this.allItems;
     return;
   }
 
-
-this.items = baseList.filter(item => {
+  this.items = this.allItems.filter(item => {
     // Each facet group must match at least one selected value
     return Object.keys(this.activeFacets).every(facetName => {
       const normalizedFacet = facetName.trim().toLowerCase();
@@ -1078,12 +1074,7 @@ async searchByLocation() {
       return distance <= parseFloat(this.searchRadius);
     });
 
-          // 🔹 Save location results for filters to use
-    this.locationResults = matches;      // <-- NEW
-    this.items = matches;                // show them
-    this.currentPage = 1;                // optional if you use pagination
-
-    if (matches.length === 0) {
+    if (this.items.length === 0) {
       alert('No practitioners found within your selected radius.');
     }
 
@@ -1095,7 +1086,6 @@ async searchByLocation() {
 
                 clearLocationSearch() {
                      this.searchLocation = '';
-                      this.locationResults = null;
                       this.searchRadius = 50;
                       this.searchUnits = 'miles';
                       this.userCoordinates = null;
