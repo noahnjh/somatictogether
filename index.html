@@ -180,16 +180,33 @@ span.inline-block.bg-blue-500,
   color: #ffffff !important;
 }
 
-/* Buttons for filters/search actions */
+/* --- Buttons --- */
 button.btn {
-  background-color: #ffffff !important;
-  color: #000000 !important;
-  border: 1px solid #d1d5db !important;
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #d1d5db;
+  transition: all 0.2s ease;
 }
 
 button.btn:hover {
-  background-color: #f3f4f6 !important;
+  background-color: #f3f4f6;
 }
+
+/* Allow active/selected buttons to display the green accent */
+button.btn.active,
+button.btn.text-\[\#137338\],
+button.btn.border-\[\#137338\] {
+  background-color: #ffffff !important;
+  color: #137338 !important;
+  border-color: #137338 !important;
+  font-weight: 600;
+}
+
+/* Optional: Add hover effect for active buttons */
+button.btn.text-\[\#137338\]:hover {
+  background-color: #eaf3ec !important;
+}
+
 @media (max-width: 640px) {
   .search-container .select,
   .search-container .btn {
