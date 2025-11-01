@@ -384,20 +384,34 @@ footer, .directory-container, .content-wrapper {
   </div>
 </div>
        
-<div class="flex justify-end mb-4">
+<div class="flex justify-end mb-4 space-x-2">
   <button
     @click="isListView = false"
-    :class="['btn btn-sm', !isListView ? 'bg-[#137338] text-white' : 'bg-gray-200 text-black']"
+    :class="[
+      'btn btn-sm flex items-center space-x-2 border border-gray-300 transition-all',
+      !isListView
+        ? 'text-[#137338] font-semibold bg-white border-[#137338]'
+        : 'text-black bg-gray-100 hover:bg-gray-200'
+    ]"
   >
-    <i class="fa fa-th-large mr-2"></i> Grid
+    <i class="fa fa-th-large"></i>
+    <span>Grid</span>
   </button>
+
   <button
     @click="isListView = true"
-    :class="['btn btn-sm ml-2', isListView ? 'bg-[#137338] text-white' : 'bg-gray-200 text-black']"
+    :class="[
+      'btn btn-sm flex items-center space-x-2 border border-gray-300 transition-all',
+      isListView
+        ? 'text-[#137338] font-semibold bg-white border-[#137338]'
+        : 'text-black bg-gray-100 hover:bg-gray-200'
+    ]"
   >
-    <i class="fa fa-bars mr-2"></i> List
+    <i class="fa fa-bars"></i>
+    <span>List</span>
   </button>
 </div>
+
 
 <div v-if="!isListView" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 
