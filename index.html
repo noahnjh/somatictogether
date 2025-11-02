@@ -1067,6 +1067,9 @@ resetFilters() {
         .filter(Boolean)
         .some(field => field.toLowerCase().includes(this.keywordSearch.toLowerCase()))
     );
+  } else {
+    // Otherwise, show all items
+    this.items = [...this.allItems];
   }
 
   // Reset pagination
