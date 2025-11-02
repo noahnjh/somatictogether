@@ -849,6 +849,7 @@ footer, .directory-container, .content-wrapper {
                 allItems: [], // Store all items to reset filters
                 selectedItem: null,
                 visibleFacets: {}, // Object to control the visibility of each facet
+                locationResults: [], // ✅ new: stores results from last location search
                 activeFacets: {},
                 isLoading: true,
                 config: {},
@@ -978,12 +979,20 @@ toggleFacet(facetName, value) {
                     console.log("Active Facets after URL params: ", this.activeFacets); // Debugging log
                 },
 applyFilters() {
+  // ✅ Determine base dataset: location results or all items
+  const baseItems =
+    this.locationResults && this.locationResults.length > 0
+      ? this.locationResults
+      : this.allItems;
+
+  // ✅ If no active filters, just use the base set (location or all)
   if (Object.keys(this.activeFacets).length === 0) {
-    this.items = this.allItems;
+    this.items = baseItems;
     return;
   }
 
-  this.items = this.allItems.filter(item => {
+  // ✅ Otherwise, filter the base set
+  this.items = baseItems.filter(item => {
     // Each facet group must match at least one selected value
     return Object.keys(this.activeFacets).every(facetName => {
       const normalizedFacet = facetName.trim().toLowerCase();
@@ -1061,8 +1070,8 @@ async searchByLocation() {
     const { lat, lon } = data[0];
     this.userCoordinates = { lat: parseFloat(lat), lon: parseFloat(lon) };
 
-    // Now filter the directory items by radius
-    this.items = this.allItems.filter(item => {
+    // ✅ Filter the directory items by radius and units
+    const resultsWithinRadius = this.allItems.filter(item => {
       if (!item.latitude || !item.longitude) return false;
       const distance = this.calculateDistance(
         this.userCoordinates.lat,
@@ -1074,7 +1083,13 @@ async searchByLocation() {
       return distance <= parseFloat(this.searchRadius);
     });
 
-    if (this.items.length === 0) {
+    // ✅ Store location-based results
+    this.locationResults = resultsWithinRadius;
+    this.items = resultsWithinRadius;
+    this.currentPage = 1; // optional: reset pagination to page 1
+
+    // ✅ If no matches found, alert user
+    if (resultsWithinRadius.length === 0) {
       alert('No practitioners found within your selected radius.');
     }
 
@@ -1086,6 +1101,7 @@ async searchByLocation() {
 
                 clearLocationSearch() {
                      this.searchLocation = '';
+                      this.locationResults = [];
                       this.searchRadius = 50;
                       this.searchUnits = 'miles';
                       this.userCoordinates = null;
