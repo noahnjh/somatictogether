@@ -1148,9 +1148,26 @@ async searchByLocation() {
                       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
                       return R * c; // Distance
                 },
-                clearKeywordSearch() {
-                  this.keywordSearch = '';
-                },
+clearKeywordSearch() {
+  this.keywordSearch = '';
+
+  // ✅ Determine base dataset: location results or all items
+  const baseItems =
+    this.locationResults && this.locationResults.length > 0
+      ? this.locationResults
+      : this.allItems;
+
+  // ✅ Also clear any lingering search-filtered state
+  this.items = [...baseItems];
+
+  // ✅ If there are still active filters, reapply them
+  if (Object.keys(this.activeFacets).length > 0) {
+    this.applyFilters();
+  }
+
+  // ✅ Reset pagination
+  this.currentPage = 1;
+},
 
             },
             computed: {
